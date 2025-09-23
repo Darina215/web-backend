@@ -1,4 +1,4 @@
-from flask import Flask, url_for, request, redirect
+from flask import Flask, url_for, request, redirect, make_response
 import datetime
 app = Flask(__name__)
 
@@ -116,8 +116,8 @@ def author():
     faculty = "ФБ"
 
     return """<!doctype html>" 
-         </html> 
-            </body> 
+         <html> 
+            <body> 
                 <p>Студент: """ + name + """</p>
                 <p>Группа: """ + group + """</p>
                 <p>Факультет: """ + faculty + """</p>
@@ -134,7 +134,7 @@ def image():
 <!doctype html>
      <html> 
         <body> 
-            <h1Ждун</h1> 
+            <h1>Ждун</h1> 
             <img src="''' + path + '''">
             <link rel="stylesheet" href="''' + css_path + '''">
         </body>
@@ -170,7 +170,7 @@ def reset_counter():
     <html>
         <body>
             Счётчик был сброшен.<br>
-            <a href="/counter">Вернуться к счётчику</a>
+            <a href="/lab1/counter">Вернуться к счётчику</a>
         </body>
     </html>
 '''
@@ -218,7 +218,7 @@ def error418():
 @app.route("/cause_error")
 def cause_error():
     result = 1 / 0
-    return "Результат: " + str(result)
+    return f"Результат: {result}"
 
 @app.errorhandler(500)
 def internal_error(err):
@@ -263,5 +263,3 @@ def internal_error(err):
     </body>
 </html>
 ''', 500
-if __name__ == "__main__":
-    app.run(debug=False)
