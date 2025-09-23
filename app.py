@@ -67,6 +67,20 @@ def counter():
             Дата и время: ''' + str(time) + '''<br>
             Запрошенный адрес: ''' + str(url) + '''<br>
             Ваш IP-адрес: ''' + str(client_ip) + '''<br>
+            <a href="/reset_counter">Сбросить счётчик</a>
+        </body>
+    </html>
+'''
+@app.route("/reset_counter")
+def reset_counter():
+    global count
+    count = 0
+    return '''
+<!doctype html>
+    <html>
+        <body>
+            Счётчик был сброшен.<br>
+            <a href="/counter">Вернуться к счётчику</a>
         </body>
     </html>
 '''
