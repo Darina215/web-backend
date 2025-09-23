@@ -19,6 +19,35 @@ def web():
             'Content-Type': 'text/plain; charset=utf-8'
         }
 
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+@app.route("/index")
+def index():
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>НГТУ, ФБ, Лабораторные работы</title>
+    </head>
+    <body>
+        <header>
+            <h1>НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="/lab1">Первая лабораторная</a></li>
+            </ul>
+        </nav>
+        <footer>
+            Редкачева Дарина Вадимовна, группа ФБИ-32, 3 курс, 2025 год
+        </footer>
+    </body>
+</html>
+''' 
+
 @app.route("/lab1/author")
 def author():
     name = "Редкачева Дарина Вадимовна"
