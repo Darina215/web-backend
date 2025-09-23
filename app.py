@@ -5,7 +5,7 @@ app = Flask(__name__)
 @app.errorhandler(404)
 def not_found(err):
     return "нет такой страницы", 404
-@app.route("/")
+
 @app.route("/lab1/web")
 def web():
     return """<!doctype html>
@@ -60,7 +60,7 @@ def lab1():
             называемых микрофреймворков — минималистичных каркасов
             веб-приложений, сознательно предоставляющих лишь самые базовые возможности.
         </p>
-        <a href="/index">На главную</a>
+        <a href="/">На главную</a>
     </body>
 </html>
 '''
@@ -146,3 +146,26 @@ def craeted():
         </body>
     </html>
 '''
+@app.route("/error400")
+def error400():
+    return make_response("400 Bad Request — Некорректный запрос", 400)
+
+@app.route("/error401")
+def error401():
+    return make_response("401 Unauthorized — Не авторизован", 401)
+
+@app.route("/error402")
+def error402():
+    return make_response("402 Payment Required — Требуется оплата", 402)
+
+@app.route("/error403")
+def error403():
+    return make_response("403 Forbidden — Доступ запрещён", 403)
+
+@app.route("/error405")
+def error405():
+    return make_response("405 Method Not Allowed — Метод не разрешён", 405)
+
+@app.route("/error418")
+def error418():
+    return make_response("418 I'm a teapot — Я — чайник (шутка RFC 2324)", 418)
