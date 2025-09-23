@@ -213,3 +213,55 @@ def error405():
 @app.route("/error418")
 def error418():
     return make_response("418 I'm a teapot — Я — чайник (шутка RFC 2324)", 418)
+
+
+@app.route("/cause_error")
+def cause_error():
+    result = 1 / 0
+    return "Результат: " + str(result)
+
+@app.errorhandler(500)
+def internal_error(err):
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>Ошибка сервера</title>
+        <style>
+            body {
+                background-color: #f8d7da;
+                color: #721c24;
+                font-family: Arial, sans-serif;
+                text-align: center;
+                padding: 50px;
+            }
+            h1 {
+                font-size: 60px;
+            }
+            p {
+                font-size: 20px;
+            }
+            a {
+                display: inline-block;
+                margin-top: 20px;
+                text-decoration: none;
+                color: #fff;
+                background-color: #721c24;
+                padding: 10px 20px;
+                border-radius: 5px;
+            }
+            a:hover {
+                background-color: #501217;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>500</h1>
+        <p>Произошла внутренняя ошибка сервера.</p>
+        <p>Попробуйте вернуться на главную страницу.</p>
+        <a href="/">Главная</a>
+    </body>
+</html>
+''', 500
+if __name__ == "__main__":
+    app.run(debug=False)
