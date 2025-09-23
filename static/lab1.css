@@ -1,0 +1,12 @@
+body {
+    background-color: #d4e4f2; 
+    color: #45536d;               
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+}
+img {
+    width: 500px;
+    height: auto;
+    border: 3px solid #45536d;
+    border-radius: 10px;
+}
