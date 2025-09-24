@@ -54,7 +54,7 @@ def not_found(err):
     <body>
         <h1>404</h1>
         <p>Упс! Похоже, такой страницы не существует.</p>
-        <img src="https://http.cat/404.jpg" alt="404 Not Found">
+        <img src="https://www.meme-arsenal.com/memes/ad5d93d7683adb4c781adc5f82dbc437.jpg" alt="404 Not Found">
         <br>
         <p><b>Ваш IP:</b> ''' + str(client_ip) + '''</p>
         <p><b>Дата доступа:</b> ''' + str(time) + '''</p>
@@ -76,7 +76,7 @@ def web():
             </body>
         </html>""", 200, {
             'X-Server': 'sample',
-            'Content-Type': 'text/html; charset=utf-8'
+            'Content-Type': 'text/plain; charset=utf-8'
         }
 
 @app.route("/")
@@ -258,7 +258,7 @@ def error418():
 @app.route("/cause_error")
 def cause_error():
     result = 1 / 0
-    return f"Результат: {result}"
+    return "Результат: ''' + str(result) + ''' "
 
 @app.errorhandler(500)
 def internal_error(err):
