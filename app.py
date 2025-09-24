@@ -2,8 +2,19 @@ from flask import Flask, url_for, request, redirect, make_response
 import datetime
 app = Flask(__name__)
 
+log404 = []
 @app.errorhandler(404)
 def not_found(err):
+    time = datetime.datetime.today()
+    client_ip = request.remote_addr
+    url = request.url
+
+    log404.append((time, client_ip, url))
+    log_html = "<ul>"
+    for time, client_ip, url in log404:
+        log_html += "<li>" + str(time) + " — " + str(client_ip) + " — " + str(url) + "</li>"
+    log_html += "</ul>"
+
     return '''
 <!doctype html>
 <html>
@@ -45,7 +56,12 @@ def not_found(err):
         <p>Упс! Похоже, такой страницы не существует.</p>
         <img src="https://http.cat/404.jpg" alt="404 Not Found">
         <br>
+        <p><b>Ваш IP:</b> ''' + str(client_ip) + '''</p>
+        <p><b>Дата доступа:</b> ''' + str(time) + '''</p>
+        <p><b>Запрошенный адрес:</b> ''' + str(url) + '''</p>
         <a href="/">Вернуться на главную</a>
+        <h2>Журнал обращений с ошибкой 404</h2>
+        ''' + log_html + '''
     </body>
 </html>
 ''', 404
