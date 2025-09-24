@@ -56,7 +56,7 @@ def web():
          <html> 
             <body> 
                 <h1>web-сервер на flask</h1> 
-                <a href="/author">author</a>
+                <a href="/lab1/author">author</a>
             </body>
         </html>""", 200, {
             'X-Server': 'sample',
@@ -105,6 +105,24 @@ def lab1():
             веб-приложений, сознательно предоставляющих лишь самые базовые возможности.
         </p>
         <a href="/">На главную</a>
+        <hr>
+        <h2>Список роутов</h2>
+        <ul>
+            <li><a href="/lab1/web">/lab1/web</a></li>
+            <li><a href="/lab1/author">/lab1/author</a></li>
+            <li><a href="/lab1/image">/lab1/image</a></li>
+            <li><a href="/lab1/counter">/lab1/counter</a></li>
+            <li><a href="/reset_counter">/reset_counter</a></li>
+            <li><a href="/lab1/info">/lab1/info</a></li>
+            <li><a href="/lab1/created">/lab1/created</a></li>
+            <li><a href="/error400">/error400</a></li>
+            <li><a href="/error401">/error401</a></li>
+            <li><a href="/error402">/error402</a></li>
+            <li><a href="/error403">/error403</a></li>
+            <li><a href="/error405">/error405</a></li>
+            <li><a href="/error418">/error418</a></li>
+            <li><a href="/cause_error">/cause_error</a></li>
+        </ul>
     </body>
 </html>
 '''
@@ -121,7 +139,7 @@ def author():
                 <p>Студент: """ + name + """</p>
                 <p>Группа: """ + group + """</p>
                 <p>Факультет: """ + faculty + """</p>
-                <a href="/web">web</a>
+                <a href="/lab1/web">web</a>
             </body>
         </html>"""
 
@@ -183,8 +201,7 @@ def reset_counter():
 '''
 @app.route("/lab1/info")
 def info():
-    return redirect("/author")
-
+    return redirect("/lab1/author")
 
 @app.route("/lab1/created")
 def craeted():
