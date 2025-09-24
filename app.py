@@ -130,16 +130,23 @@ def image():
     path = url_for("static", filename="ждун.jpg")
     css_path = url_for("static", filename="lab1.css")
 
-    return '''
-<!doctype html>
-     <html> 
-        <body> 
-            <h1>Ждун</h1> 
-            <img src="''' + path + '''">
-            <link rel="stylesheet" href="''' + css_path + '''">
-        </body>
-    </html>
-'''
+    html =  '''
+    <!doctype html>
+        <html> 
+            <body> 
+                <h1>Ждун</h1> 
+                <img src="''' + path + '''">
+                <link rel="stylesheet" href="''' + css_path + '''">
+            </body>
+        </html>
+    '''
+    headers = {
+        "Content-Language": "ru",       
+        "X-Author": "Redkacheva Darina", 
+        "X-Lab": "Web-programming Lab1" 
+    }
+    return html, 200, headers
+
 count = 0
 @app.route("/lab1/counter")
 def counter():
@@ -212,7 +219,7 @@ def error405():
 
 @app.route("/error418")
 def error418():
-    return make_response("418 I'm a teapot — Я — чайник (шутка RFC 2324)", 418)
+    return make_response("418 I'm a teapot — Я — чайник", 418)
 
 
 @app.route("/cause_error")
