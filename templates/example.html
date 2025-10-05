@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Редкачева Дарина. Лабораторная работа 2</title>
+    <title>Редкачева Дарина. Лабораторная работа {{ count_lab }}</title>
 </head>
 <body>
     <header>
-        WEB-программирование, часть 2. Лабораторная работа 2
+        WEB-программирование, часть 2. Лабораторная работа {{ count_lab }}
     </header>
 
     <main>
@@ -15,7 +15,7 @@
     </main>
 
     <footer>
-        &copy; Редкачева Дарина, ФБИ-32, 3 курс, 2025
+        &copy; {{ name }}, {{ group }}, {{ course }} курс, 2025
     </footer>
 </body>
 </html>
