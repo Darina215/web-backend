@@ -6,10 +6,23 @@
 {# основной контент: #}
 {% block main %}
     <h1>Шаблоны</h1>
-    <div>Тема лабораторной - шаблоны. Список сделанных страниц:</div>
+    <div>Список сделанных страниц:</div>
     <ol>
-        <li>
-            <a href="/lab2/example">example</a>
-        </li>
+        <li><a href="/lab2/a">Без слэша</a></li>
+        <li><a href="/lab2/a/">Со слэшем</a></li>
+        <li><a href="/lab2/flowers/<int:flower_id>">Цветы</a></li>
+        <li><a href="/lab2/clear_flowers">Очистить список цветов</a></li>
+        <li><a href="/lab2/add_flower/<name>">Добавление нового цветка</a></li>
+        <li><a href="/lab2/add_flower/">Не задали название цветка</a></li>
+        <li><a href="/lab2/all_flowers">Список всех цветов</a></li>
+        <li><a href="/lab2/example">Фрукты</a></li>
+        <li><a href="/lab2/filters">Фильтры</a></li>
+        <li><a href="/lab2/calc/<int:a>/<int:b>">Калькулятор</a></li>
+        <li><a href="/lab2/calc/">Калькулятор (по умолчанию 1/1)</a></li>
+        <li><a href="/lab2/calc/<int:a>">Калькулятор (с числом из первого url)</a></li>
+        <li><a href="/lab2/books_list">Книги</a></li>
+        <li><a href="/lab2/memes">Мемы</a></li>
+        <hr>
+        <a href="/">На главную</a>
     </ol>
 {% endblock %}

@@ -12,6 +12,7 @@ header {
 }
 main {
     padding: 10px;
+    font-family: 'Times New Roman', Times, serif;
 }
 footer {
     background-color: rgb(219, 112, 147);
@@ -25,4 +26,7 @@ footer {
     right: 0;
     left: 0;
     z-index: 2;
+}
+h1, div, ol {
+    color: rgb(219, 112, 147);
 }

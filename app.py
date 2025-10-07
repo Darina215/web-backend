@@ -96,6 +96,9 @@ def index():
             <ul>
                 <li><a href="/lab1">Первая лабораторная</a></li>
             </ul>
+            <ul>
+                <li><a href="/lab2">Вторая лабораторная</a></li>
+            </ul>
         </nav>
         <footer>
             Редкачева Дарина Вадимовна, группа ФБИ-32, 3 курс, 2025 год
@@ -305,6 +308,10 @@ def internal_error(err):
 ''', 500
 
 #---------------------------------------------------------Лабораторная 2 ---------------------------------------------------------
+@app.route('/lab2/')
+def lab2():
+    return render_template('lab2.html')
+    
 @app.route('/lab2/a')
 def a():
     return 'без слэша'
@@ -374,7 +381,6 @@ def all_flowers():
     </body>
 </html>
 '''
-
 @app.route('/lab2/example')
 def example():
     name = 'Редкачева Дарина'
@@ -395,10 +401,6 @@ def example():
         course=course,
         fruits=fruits
     )
-
-@app.route('/lab2/')
-def lab2():
-    return render_template('lab2.html')
 
 @app.route('/lab2/filters')
 def filters():
