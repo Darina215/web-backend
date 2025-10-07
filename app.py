@@ -343,7 +343,7 @@ def clear_flowers():
         </body>
     </html>
     '''
-    
+
 @app.route('/lab2/add_flower/<name>')
 def add_flower(name):
     flower_list.append(name)
@@ -375,7 +375,6 @@ def all_flowers():
 </html>
 '''
 
-
 @app.route('/lab2/example')
 def example():
     name = 'Редкачева Дарина'
@@ -405,3 +404,35 @@ def lab2():
 def filters():
     phrase = "О <b>сколько</b> <u>нам</u> <i>открытий</> чудных..."
     return render_template('filter.html', phrase=phrase)
+
+@app.route('/lab2/calc/<int:a>/<int:b>')
+def calc(a,b):
+    add_res = a + b 
+    sub_res = a - b 
+    mul_res = a * b 
+    div_res = None if b == 0 else a / b 
+    pow_res = a ** b 
+
+    div_text = 'делить на 0 нельзя &#9940;' if div_res is None else f'{div_res}'
+    return f'''
+<!doctype html>
+<html>
+    <body>
+        <h1>Расчет с параметрами:</h1>
+        <div>
+            {a} + {b} = {add_res} <br>
+            {a} - {b} = {sub_res} <br>
+            {a} × {b} = {mul_res} <br>
+            {a} / {b} = {div_text} <br>
+            {a}<sup>{b}</sup> = {pow_res} <br>
+        </div>
+    </body>
+</html>
+'''
+@app.route('/lab2/calc/')
+def calc_default():
+    return redirect(url_for('calc', a=1, b=1))
+
+@app.route('/lab2/calc/<int:a>')
+def calc_one_param(a):
+    return redirect(url_for('calc', a=a, b=1))
