@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мемы</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .mem-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .mem-card {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            width: 200px;
+            text-align: center;
+        }
+        .mem-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Список мемов</h1>
+    <div class="mem-container">
+        {% for mem in memes %}
+        <div class="mem-card">
+            <img src="{{ url_for('static', filename=mem.image) }}" alt="{{ mem.name }}">
+            <h3>{{ mem.name }}</h3>
+            <p>{{ mem.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -453,3 +453,30 @@ books = [
 @app.route("/lab2/books_list")
 def books_list():
     return render_template("books.html", books=books)
+
+memes = [
+    {"name": "Мем №1", "image": "#mems.jfif", "description": "Приятный плакат."},
+    {"name": "Мем №2", "image": "бокал.jfif", "description": "Пес в бокале."},
+    {"name": "Мем №3", "image": "веселый.jfif", "description": "Веселый)"},
+    {"name": "Мем №4", "image": "грустный.jfif", "description": "Грустный("},
+    {"name": "Мем №5", "image": "довольный.jfif", "description": "Хихик."},
+    {"name": "Мем №6", "image": "загрузки.jfif", "description": "Не понял."},
+    {"name": "Мем №7", "image": "заяц.jfif", "description": "Когда получил автомат по web-программированию"},
+    {"name": "Мем №8", "image": "Клоун.jfif", "description": "Я."},
+    {"name": "Мем №9", "image": "кокетка.jfif", "description": "Кокетка."},
+    {"name": "Мем №10", "image": "кот_шок.jfif", "description": "Увидел цены на что-либо."},
+    {"name": "Мем №11", "image": "кот_думает.jfif", "description": "Загадочный."},
+    {"name": "Мем №12", "image": "ненехочу.jfif", "description": "Поступай в магистратуру!"},
+    {"name": "Мем №13", "image": "сердечко.jfif", "description": "Всем кто это увидел )))"},
+    {"name": "Мем №14", "image": "собака_релакс.jfif", "description": "Скоро день рождения.."},
+    {"name": "Мем №15", "image": "стая.jfif", "description": "Да."},
+    {"name": "Мем №16", "image": "трудовые.jfif", "description": "Базовый минимум."},
+    {"name": "Мем №17", "image": "фиолетовый.jfif", "description": "Вливаюсь в новую компанию."},
+    {"name": "Мем №18", "image": "язык.jfif", "description": "Хихик)"},
+    {"name": "Мем №19", "image": "язык2.jpg", "description": "Прикольный."},
+    {"name": "Мем №20", "image": "кот.jfif", "description": "Конец!"}
+]
+
+@app.route("/lab2/memes")
+def memes_pict():
+    return render_template("memes.html", memes=memes)
