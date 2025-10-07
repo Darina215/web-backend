@@ -3,12 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Редкачева Дарина. Лабораторная работа {{ count_lab }}</title>
+    <title>
+        {% if name %}
+            {{ name }},
+        {% else %}
+            Anonymous,
+        {% endif %}
+        . Лабораторная работа {{ count_lab }}
+    </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
     <header>
-        WEB-программирование, часть 2. Лабораторная работа {{ count_lab }}
+        WEB-программирование, часть 2. {% if count_lab %}Лабораторная работа 2{% endif %}
     </header>
 
     <main>
@@ -20,7 +27,23 @@
     </main>
 
     <footer>
-        &copy; {{ name }}, {{ group }}, {{ course }} курс, 2025
+        &copy; 
+        {% if name %}
+            {{ name }}, 
+        {% else %}
+            Anonymous,
+        {% endif %}
+        {% if group %}
+            {{ group }}, 
+        {% else %}
+            ???,
+        {% endif %}
+        {% if course %}
+            {{ course }} курс, 
+        {% else %}
+            ???,
+        {% endif %}
+        2025
     </footer>
 </body>
 </html>
