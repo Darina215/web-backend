@@ -311,7 +311,7 @@ def internal_error(err):
 @app.route('/lab2/')
 def lab2():
     return render_template('lab2.html')
-    
+
 @app.route('/lab2/a')
 def a():
     return 'без слэша'
@@ -320,67 +320,53 @@ def a():
 def a2():
     return 'со слэшем'
 
-flower_list = ['мак', 'василек', 'гвоздика', 'георгин', 'пион']
+flower_list = [ 
+    {'name': 'мак', 'price': 50},
+    {'name': 'василек', 'price': 60},
+    {'name': 'гвоздика', 'price': 70},
+    {'name': 'георгин', 'price': 80},
+    {'name': 'пион', 'price': 120},
+]
 
 @app.route('/lab2/flowers/<int:flower_id>')
-def flowers(flower_id):
-    if flower_id >= len(flower_list):
+def flower_detail(flower_id):
+    if flower_id < 0 or flower_id >= len(flower_list):
         abort(404)
-    else: 
-        return f'''
-    <!doctype html>
-    <html>
-        <body>
-            <h1>Выбранный цветок</h1>
-            <p>Цветок: <b>{flower_list[flower_id]}</b></p>
-            <p><a href="/lab2/all_flowers">Посмотреть все цветы</a></p>
-        </body>
-    </html>
-    '''
+    flower = flower_list[flower_id]
+    return render_template('flower_detail.html', flower=flower, flower_id=flower_id)
+
 @app.route('/lab2/clear_flowers')
 def clear_flowers():
     flower_list.clear()
-    return '''
-    <!doctype html>
-    <html>
-        <body>
-            <h1>Список цветов очищен</h1>
-            <p>Все цветы удалены из списка.</p>
-            <p><a href="/lab2/all_flowers">Посмотреть список цветов</a></p>
-        </body>
-    </html>
-    '''
+    return redirect(url_for('all_flowers'))
 
-@app.route('/lab2/add_flower/<name>')
-def add_flower(name):
-    flower_list.append(name)
-    return f'''
-<!doctype html>
-<html>
-    <body>
-        <h1>Добавлен новый цветок</h1>
-        <p>Название нового цветка: {name}</p>
-        <p>Всего цветов: {len(flower_list)}</p>
-        <p>Полный список: {flower_list}</p>
-    </body>
-</html>
-'''
-@app.route('/lab2/add_flower/')
-def add_flower_no_name():
-    return "Вы не задали имя цветка", 400
+@app.route('/lab2/delete_flower/<int:flower_id>')
+def delete_flower(flower_id):
+    if flower_id < 0 or flower_id >= len(flower_list):
+        abort(404)
+    flower_list.pop(flower_id)
+    return redirect(url_for('all_flowers'))
+
+@app.route('/lab2/add_flower', methods=['POST'])
+def add_flower():
+    name = request.form.get('name', '').strip()
+    price = request.form.get('price', '').strip()
+    if not name:
+        return redirect(url_for('all_flowers'))
+    try:
+        price_val = int(price)
+    except Exception:
+        try:
+            price_val = float(price)
+        except Exception:
+            price_val = 0
+    flower_list.append({'name': name, 'price': price_val})
+    return redirect(url_for('all_flowers'))
 
 @app.route('/lab2/all_flowers')
 def all_flowers():
-    return f'''
-<!doctype html>
-<html>
-    <body>
-    <h1>Список всех цветов</h1>
-    <p>Всего цветов: {len(flower_list)}</p>
-    <p>Полный список: {flower_list}</p>
-    </body>
-</html>
-'''
+    return render_template('all_flowers.html', flower_list=flower_list)
+
 @app.route('/lab2/example')
 def example():
     name = 'Редкачева Дарина'
