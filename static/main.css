@@ -30,3 +30,7 @@ footer {
 h1, div, ol {
     color: rgb(219, 112, 147);
 }
+.error {
+    color: red;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
