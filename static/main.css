@@ -34,3 +34,19 @@ h1, div, ol {
     color: red;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
+.order-form {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 25px;
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+button {
+    border-color: #e70974;
+    border-radius: 20px;
+    color: blue;
+    font-size: 15px;
+    margin: 5px;
+}
