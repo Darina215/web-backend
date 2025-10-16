@@ -62,10 +62,39 @@ def pay():
     if request.args.get('sugar') == 'on':
         price += 10
     
-    return render_template('/lab3/pay.html', price=price)
+    return render_template('lab3/pay.html', price=price)
 
 
 @lab3.route('/lab3/success')
 def success():
     price = request.args.get('price')
-    return render_template('/lab3/success.html', price=price)
+    return render_template('lab3/success.html', price=price)
+
+
+@lab3.route('/lab3/settings')
+def settings():
+    color = request.args.get('color')
+    bgcolor = request.args.get('bgcolor')
+    fontsize = request.args.get('fontsize')
+    shadow = request.args.get('shadow') 
+
+    if color or bgcolor or fontsize or shadow is not None:
+        resp = make_response(redirect('/lab3/settings'))
+        if color:
+            resp.set_cookie('color', color)
+        if bgcolor:
+            resp.set_cookie('bgcolor', bgcolor)
+        if fontsize:
+            resp.set_cookie('fontsize', fontsize)
+        if shadow is not None:
+            resp.set_cookie('shadow', 'true')
+        else:
+            resp.set_cookie('shadow', '', expires=0)  
+        return resp
+
+    color = request.cookies.get('color')
+    bgcolor = request.cookies.get('bgcolor')
+    fontsize = request.cookies.get('fontsize')
+    shadow = request.cookies.get('shadow') == 'true'
+
+    return render_template('lab3/settings.html', color=color, bgcolor=bgcolor, fontsize=fontsize, shadow=shadow)

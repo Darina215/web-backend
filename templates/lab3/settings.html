@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{# основной контент: #}
+{% block main %}
+    <h1>Cookies</h1>
+    <form>
+        <div>
+            <label for="color">Выберите цвет текста:</label>
+            <input type="color" id="color" name="color" value="{{ color or '' }}">
+        </div>
+        <div>
+            <label for="bgcolor">Выберите цвет фона текста:</label>
+            <input type="color" id="bgcolor" name="bgcolor" value="{{ bgcolor or '' }}">
+        </div>
+        <div>
+            <label for="fontsize">Выберите размер шрифта (px):</label>
+            <input type="number" id="fontsize" name="fontsize" value="{{ fontsize or '' }}">
+        </div>
+        <div>
+            <label for="color">Добавить тень текста?</label>
+            <input type="checkbox" id="shadow" name="shadow" {% if shadow %}checked{% endif %}">
+        </div>
+        <div>
+            <button type="submit">OK</button>
+        </div>
+    </form>
+    <div style="
+        color: {{ color or 'black' }};
+        background-color: {{ bgcolor }};
+        font-size: {{ fontsize }}px;
+        text-shadow: {% if shadow %}2px 2px 5px gray{% else %}none{% endif %};
+    ">
+        Пример текста для проверки настроек
+    </div>
+{% endblock %}
