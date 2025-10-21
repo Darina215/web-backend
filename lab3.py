@@ -101,6 +101,20 @@ def settings():
     return render_template('lab3/settings.html', color=color, bgcolor=bgcolor, fontsize=fontsize, shadow=shadow)
 
 
+@lab3.route('/lab3/del_settings')
+def del_settings():
+    # Создаём ответ с редиректом обратно на страницу настроек
+    resp = make_response(redirect('/lab3/settings'))
+
+    # Удаляем все cookie, которые использовались в settings
+    resp.set_cookie('color', '', expires=0)
+    resp.set_cookie('bgcolor', '', expires=0)
+    resp.set_cookie('fontsize', '', expires=0)
+    resp.set_cookie('shadow', '', expires=0)
+
+    return resp
+
+
 SHEETS = ['нижняя', 'верхняя', 'верхняя боковая', 'нижняя боковая']
 
 @lab3.route('/lab3/ticket', methods=['GET', 'POST'])
