@@ -103,10 +103,8 @@ def settings():
 
 @lab3.route('/lab3/del_settings')
 def del_settings():
-    # Создаём ответ с редиректом обратно на страницу настроек
     resp = make_response(redirect('/lab3/settings'))
 
-    # Удаляем все cookie, которые использовались в settings
     resp.set_cookie('color', '', expires=0)
     resp.set_cookie('bgcolor', '', expires=0)
     resp.set_cookie('fontsize', '', expires=0)
@@ -123,7 +121,7 @@ def ticket_form():
     values = {}
 
     if request.method == 'POST':
-        # Получаем данные из формы
+        
         values['full_name'] = request.form.get('full_name', '').strip()
         values['sheet'] = request.form.get('sheet', '')
         values['with_linens'] = request.form.get('with_linens') == 'on'
@@ -134,7 +132,6 @@ def ticket_form():
         values['travel_date'] = request.form.get('travel_date', '').strip()
         values['insurance'] = request.form.get('insurance') == 'on'
 
-        # Валидация
         if not values['full_name']:
             errors['full_name'] = 'ФИО обязательно.'
         if values['sheet'] not in SHEETS:
@@ -155,7 +152,6 @@ def ticket_form():
         if not values['travel_date']:
             errors['travel_date'] = 'Дата поездки обязательна.'
 
-        # Если ошибок нет — считаем билет
         if not errors:
             age_int = int(values['age'])
             price = 1000 if age_int >= 18 else 700
@@ -186,3 +182,131 @@ def ticket_form():
     return render_template('lab3/ticket_form.html', sheets=SHEETS, values=values, errors=errors)
 
 
+PRODUCTS = [
+    {"name": "Мягкая игрушка медведь", "price": 500, "brand": "TeddyCo", "age": "3+"},
+    {"name": "Конструктор LEGO Classic", "price": 1200, "brand": "LEGO", "age": "5+"},
+    {"name": "Пазл 1000 элементов", "price": 650, "brand": "PuzzleWorld", "age": "8+"},
+    {"name": "Кукла Барби", "price": 800, "brand": "Mattel", "age": "3+"},
+    {"name": "Машинка Hot Wheels", "price": 300, "brand": "Mattel", "age": "4+"},
+    {"name": "Набор Play-Doh", "price": 450, "brand": "Hasbro", "age": "3+"},
+    {"name": "Робот-трансформер", "price": 1500, "brand": "Robotics", "age": "6+"},
+    {"name": "Детский велосипед", "price": 4000, "brand": "Velokids", "age": "5+"},
+    {"name": "Кубики деревянные", "price": 350, "brand": "WoodToys", "age": "2+"},
+    {"name": "Игровой набор кухня", "price": 1800, "brand": "KidKraft", "age": "3+"},
+    {"name": "Мягкая игрушка слон", "price": 550, "brand": "TeddyCo", "age": "3+"},
+    {"name": "Железная дорога", "price": 2200, "brand": "Thomas", "age": "4+"},
+    {"name": "Набор для рисования", "price": 700, "brand": "Crayola", "age": "4+"},
+    {"name": "Кукла LOL", "price": 950, "brand": "MGA", "age": "5+"},
+    {"name": "Машинка на радиоуправлении", "price": 1800, "brand": "RCWorld", "age": "6+"},
+    {"name": "Игровой набор ферма", "price": 1300, "brand": "PlayBig", "age": "3+"},
+    {"name": "Плюшевый зайчик", "price": 400, "brand": "TeddyCo", "age": "3+"},
+    {"name": "Конструктор металлический", "price": 1600, "brand": "MechToys", "age": "7+"},
+    {"name": "Набор для лепки", "price": 600, "brand": "Hasbro", "age": "3+"},
+    {"name": "Детский самокат", "price": 3500, "brand": "ScooterKids", "age": "4+"},
+]
+
+@lab3.route('/lab3/products', methods=['GET', 'POST'])
+def products():
+    # Получаем минимальную и максимальную цену среди всех товаров
+    prices = [p['price'] for p in PRODUCTS]
+    overall_min = min(prices)
+    overall_max = max(prices)
+
+    # Читаем диапазон из cookies
+    cookie_min = request.cookies.get('min_price')
+    cookie_max = request.cookies.get('max_price')
+
+    # Начальные значения для формы
+    min_price = request.form.get('min_price', cookie_min)
+    max_price = request.form.get('max_price', cookie_max)
+
+    filtered = PRODUCTS
+
+    if request.method == 'POST':
+        action = request.form.get('action')
+
+        # Кнопка "Сброс"
+        if action == 'reset':
+            resp = make_response(render_template('lab3/products.html',
+                                                 products=PRODUCTS,
+                                                 count=len(PRODUCTS),
+                                                 min_price='',
+                                                 max_price='',
+                                                 overall_min=overall_min,
+                                                 overall_max=overall_max))
+            resp.set_cookie('min_price', '', expires=0)
+            resp.set_cookie('max_price', '', expires=0)
+            return resp
+
+        # Кнопка "Искать"
+        if action == 'search':
+            try:
+                min_val = float(request.form.get('min_price')) if request.form.get('min_price') else None
+            except ValueError:
+                min_val = None
+            try:
+                max_val = float(request.form.get('max_price')) if request.form.get('max_price') else None
+            except ValueError:
+                max_val = None
+
+            # Автоматически исправляем, если min > max
+            if min_val is not None and max_val is not None and min_val > max_val:
+                min_val, max_val = max_val, min_val
+
+            # Фильтруем
+            def check_price(p):
+                if min_val is not None and p['price'] < min_val:
+                    return False
+                if max_val is not None and p['price'] > max_val:
+                    return False
+                return True
+
+            filtered = [p for p in PRODUCTS if check_price(p)]
+
+            # Сохраняем выбранные значения в cookies
+            resp = make_response(render_template('lab3/products.html',
+                                                 products=filtered,
+                                                 count=len(filtered),
+                                                 min_price=min_val if min_val is not None else '',
+                                                 max_price=max_val if max_val is not None else '',
+                                                 overall_min=overall_min,
+                                                 overall_max=overall_max))
+            if min_val is not None:
+                resp.set_cookie('min_price', str(min_val))
+            if max_val is not None:
+                resp.set_cookie('max_price', str(max_val))
+            return resp
+
+    # Если пользователь ранее заходил — показываем фильтрованные товары по cookies
+    if cookie_min or cookie_max:
+        try:
+            min_val = float(cookie_min) if cookie_min else None
+        except ValueError:
+            min_val = None
+        try:
+            max_val = float(cookie_max) if cookie_max else None
+        except ValueError:
+            max_val = None
+
+        # Авто исправление min/max
+        if min_val is not None and max_val is not None and min_val > max_val:
+            min_val, max_val = max_val, min_val
+
+        def check_price(p):
+            if min_val is not None and p['price'] < min_val:
+                return False
+            if max_val is not None and p['price'] > max_val:
+                return False
+            return True
+
+        filtered = [p for p in PRODUCTS if check_price(p)]
+        min_price = min_val if min_val is not None else ''
+        max_price = max_val if max_val is not None else ''
+
+    return render_template('lab3/products.html',
+                           products=filtered,
+                           count=len(filtered),
+                           min_price=min_price,
+                           max_price=max_price,
+                           overall_min=overall_min,
+                           overall_max=overall_max)

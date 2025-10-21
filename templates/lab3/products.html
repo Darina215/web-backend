@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Поиск игрушек</title>
+{% endblock %}
+
+{% block lab %}Лабораторная работа 3, Дополнительное задание{% endblock %}
+{# основной контент: #}
+{% block main %}
+    <h1>Поиск игрушек по цене</h1>
+
+    <form method="post">
+        <label>Мин. цена:
+            <input type="number" name="min_price" placeholder="{{ overall_min }}" value="{{ min_price }}">
+        </label>
+        <label>Макс. цена:
+            <input type="number" name="max_price" placeholder="{{ overall_max }}" value="{{ max_price }}">
+        </label>
+        <br><br>
+        <button type="submit" name="action" value="search">Искать</button>
+        <button type="submit" name="action" value="reset">Сброс</button>
+    </form>
+
+    <h2>Найдено игрушек: {{ count }}</h2>
+
+    {% if count == 0 %}
+        <p>Не найдено ни одной игрушки.</p>
+    {% else %}
+        <ul>
+            {% for p in products %}
+                <li>{{ p.name }} — {{ p.price }} руб. — {{ p.brand }} — {{ p.age }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
+
