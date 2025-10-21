@@ -1,9 +1,10 @@
-<!doctype html>
-<html lang="ru">
-<head>
-  <meta charset="utf-8">
-  <title>Список всех цветов</title>
-</head>
+{% extends "base.html" %} 
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 2, Список всех цветов{% endblock %}
+
+{# основной контент: #}
+{% block main %}
 <body>
   <h1>Список всех цветов</h1>
 
@@ -18,10 +19,10 @@
         {% for flower in flower_list %}
           <tr>
             <td>{{ loop.index0 }}</td>
-            <td><a href="{{ url_for('flower_detail', flower_id=loop.index0) }}">{{ flower.name }}</a></td>
+            <td><a href="{{ url_for('lab2.flower_detail', flower_id=loop.index0) }}">{{ flower.name }}</a></td>
             <td>{{ flower.price }}</td>
             <td class="actions">
-              <a href="{{ url_for('delete_flower', flower_id=loop.index0) }}">удалить</a>
+              <a href="{{ url_for('lab2.delete_flower', flower_id=loop.index0) }}">удалить</a>
             </td>
           </tr>
         {% endfor %}
@@ -34,14 +35,13 @@
   <hr>
 
   <h3>Добавить новый цветок</h3>
-  <form class="add" action="{{ url_for('add_flower') }}" method="post">
+  <form class="add" action="{{ url_for('lab2.add_flower') }}" method="post">
     <label>Название: <input type="text" name="name" required></label>
     <label> Цена: <input type="number" name="price" step="1" value="0" style="width:90px;"></label>
     <button type="submit">Добавить</button>
   </form>
 
   <p style="margin-top:12px;">
-    <a href="{{ url_for('clear_flowers') }}" onclick="return confirm('Удалить все цветы?');">Удалить все цветы</a>
+    <a href="{{ url_for('lab2.clear_flowers') }}" onclick="return confirm('Удалить все цветы?');">Удалить все цветы</a>
   </p>
-</body>
-</html>
+{% endblock %}

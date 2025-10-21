@@ -5,7 +5,7 @@ lab2 = Blueprint('lab2', __name__)
 
 @lab2.route('/lab2/')
 def labb():
-    return render_template('lab2.html')
+    return render_template('lab2/lab2.html')
 
 
 @lab2.route('/lab2/a')
@@ -31,14 +31,14 @@ def flower_detail(flower_id):
     if flower_id < 0 or flower_id >= len(flower_list):
         abort(404)
     flower = flower_list[flower_id]
-    return render_template('flower_detail.html', flower=flower, flower_id=flower_id)
+    return render_template('lab2/flower_detail.html', flower=flower, flower_id=flower_id)
 
 
 
 @lab2.route('/lab2/clear_flowers')
 def clear_flowers():
     flower_list.clear()
-    return redirect(url_for('all_flowers'))
+    return redirect(url_for('lab2.all_flowers'))
 
 
 @lab2.route('/lab2/delete_flower/<int:flower_id>')
@@ -46,7 +46,7 @@ def delete_flower(flower_id):
     if flower_id < 0 or flower_id >= len(flower_list):
         abort(404)
     flower_list.pop(flower_id)
-    return redirect(url_for('all_flowers'))
+    return redirect(url_for('lab2.all_flowers'))
 
 
 @lab2.route('/lab2/add_flower', methods=['POST'])
@@ -54,7 +54,7 @@ def add_flower():
     name = request.form.get('name', '').strip()
     price = request.form.get('price', '').strip()
     if not name:
-        return redirect(url_for('all_flowers'))
+        return redirect(url_for('lab2.all_flowers'))
     try:
         price_val = int(price)
     except Exception:
@@ -62,13 +62,13 @@ def add_flower():
             price_val = float(price)
         except Exception:
             price_val = 0
-    flower_list.lab2end({'name': name, 'price': price_val})
-    return redirect(url_for('all_flowers'))
+    flower_list.append({'name': name, 'price': price_val})
+    return redirect(url_for('lab2.all_flowers'))
 
 
 @lab2.route('/lab2/all_flowers')
 def all_flowers():
-    return render_template('all_flowers.html', flower_list=flower_list)
+    return render_template('lab2/all_flowers.html', flower_list=flower_list)
 
 
 @lab2.route('/lab2/example')
@@ -84,7 +84,7 @@ def example():
         {'name': 'арбузы', 'price': 95},
         {'name': 'персики', 'price': 200}
     ]
-    return render_template('example.html', 
+    return render_template('lab2/example.html', 
         name=name,
         count_lab=count_lab,
         group=group,
@@ -95,8 +95,8 @@ def example():
 
 @lab2.route('/lab2/filters')
 def filters():
-    phrase = "О <b>сколько</b> <u>нам</u> <i>открытий</> чудных..."
-    return render_template('filter.html', phrase=phrase)
+    phrase = "О <b>сколько</b> <u>нам</u> <i>открытий</i> чудных..."
+    return render_template('lab2/filter.html', phrase=phrase)
 
 
 @lab2.route('/lab2/calc/<int:a>/<int:b>')
@@ -127,12 +127,12 @@ def calc(a,b):
 
 @lab2.route('/lab2/calc/')
 def calc_default():
-    return redirect(url_for('calc', a=1, b=1))
+    return redirect(url_for('lab2.calc', a=1, b=1))
 
 
 @lab2.route('/lab2/calc/<int:a>')
 def calc_one_param(a):
-    return redirect(url_for('calc', a=a, b=1))
+    return redirect(url_for('lab2.calc', a=a, b=1))
 
 
 books = [
@@ -150,7 +150,7 @@ books = [
 
 @lab2.route("/lab2/books_list")
 def books_list():
-    return render_template("books.html", books=books)
+    return render_template("lab2/books.html", books=books)
 
 
 memes = [
@@ -178,4 +178,4 @@ memes = [
 
 @lab2.route("/lab2/memes")
 def memes_pict():
-    return render_template("memes.html", memes=memes)
+    return render_template("lab2/memes.html", memes=memes)
