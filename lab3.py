@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, make_response, redirect
+from datetime import datetime
 lab3 = Blueprint('lab3', __name__)
 
 
@@ -98,3 +99,76 @@ def settings():
     shadow = request.cookies.get('shadow') == 'true'
 
     return render_template('lab3/settings.html', color=color, bgcolor=bgcolor, fontsize=fontsize, shadow=shadow)
+
+
+SHEETS = ['нижняя', 'верхняя', 'верхняя боковая', 'нижняя боковая']
+
+@lab3.route('/lab3/ticket', methods=['GET', 'POST'])
+def ticket_form():
+    errors = {}
+    values = {}
+
+    if request.method == 'POST':
+        # Получаем данные из формы
+        values['full_name'] = request.form.get('full_name', '').strip()
+        values['sheet'] = request.form.get('sheet', '')
+        values['with_linens'] = request.form.get('with_linens') == 'on'
+        values['with_baggage'] = request.form.get('with_baggage') == 'on'
+        values['age'] = request.form.get('age', '').strip()
+        values['from_point'] = request.form.get('from_point', '').strip()
+        values['to_point'] = request.form.get('to_point', '').strip()
+        values['travel_date'] = request.form.get('travel_date', '').strip()
+        values['insurance'] = request.form.get('insurance') == 'on'
+
+        # Валидация
+        if not values['full_name']:
+            errors['full_name'] = 'ФИО обязательно.'
+        if values['sheet'] not in SHEETS:
+            errors['sheet'] = 'Выберите полку.'
+        if not values['age']:
+            errors['age'] = 'Возраст обязателен.'
+        else:
+            try:
+                age_int = int(values['age'])
+                if age_int < 1 or age_int > 120:
+                    errors['age'] = 'Возраст должен быть от 1 до 120.'
+            except ValueError:
+                errors['age'] = 'Возраст должен быть числом.'
+        if not values['from_point']:
+            errors['from_point'] = 'Пункт выезда обязателен.'
+        if not values['to_point']:
+            errors['to_point'] = 'Пункт назначения обязателен.'
+        if not values['travel_date']:
+            errors['travel_date'] = 'Дата поездки обязательна.'
+
+        # Если ошибок нет — считаем билет
+        if not errors:
+            age_int = int(values['age'])
+            price = 1000 if age_int >= 18 else 700
+            if values['sheet'] in ['нижняя', 'нижняя боковая']:
+                price += 100
+            if values['with_linens']:
+                price += 75
+            if values['with_baggage']:
+                price += 250
+            if values['insurance']:
+                price += 150
+
+            ticket = {
+                'full_name': values['full_name'],
+                'sheet': values['sheet'],
+                'with_linens': values['with_linens'],
+                'with_baggage': values['with_baggage'],
+                'age': age_int,
+                'from_point': values['from_point'],
+                'to_point': values['to_point'],
+                'travel_date': values['travel_date'],
+                'insurance': values['insurance'],
+                'price': price,
+                'is_child': age_int < 18
+            }
+            return render_template('lab3/ticket.html', ticket=ticket)
+
+    return render_template('lab3/ticket_form.html', sheets=SHEETS, values=values, errors=errors)
+
+

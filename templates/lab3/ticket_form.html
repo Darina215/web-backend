@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Заказ железнодорожного билета</title>
+    <style>
+        label { display:block; margin-top:0.6em; }
+        .error { color: red; }
+    </style>
+{% endblock %}
+
+
+{% block lab %}Лабораторная работа 3, Железнодорожный билет{% endblock %}
+{# основной контент: #}
+{% block main %}
+    <h1>Форма железнодорожного билета</h1>
+    <form method="post">
+        <label>ФИО:
+            <input type="text" name="full_name" value="{{ values.get('full_name','') }}">
+            {% if errors.full_name %}<span class="error">{{ errors.full_name }}</span>{% endif %}
+        </label>
+
+        <label>Полка:</label>
+        {% for s in sheets %}
+            <label>
+                <input type="radio" name="sheet" value="{{ s }}" {% if values.get('sheet')==s %}checked{% endif %}> {{ s }}
+            </label>
+        {% endfor %}
+        {% if errors.sheet %}<span class="error">{{ errors.sheet }}</span>{% endif %}
+
+        <label><input type="checkbox" name="with_linens" {% if values.get('with_linens') %}checked{% endif %}> С бельём</label>
+        <label><input type="checkbox" name="with_baggage" {% if values.get('with_baggage') %}checked{% endif %}> С багажом</label>
+
+        <label>Возраст:
+            <input type="number" name="age" min="1" max="120" value="{{ values.get('age','') }}">
+            {% if errors.age %}<span class="error">{{ errors.age }}</span>{% endif %}
+        </label>
+
+        <label>Пункт выезда:
+            <input type="text" name="from_point" value="{{ values.get('from_point','') }}">
+            {% if errors.from_point %}<span class="error">{{ errors.from_point }}</span>{% endif %}
+        </label>
+
+        <label>Пункт назначения:
+            <input type="text" name="to_point" value="{{ values.get('to_point','') }}">
+            {% if errors.to_point %}<span class="error">{{ errors.to_point }}</span>{% endif %}
+        </label>
+
+        <label>Дата поездки:
+            <input type="date" name="travel_date" value="{{ values.get('travel_date','') }}">
+            {% if errors.travel_date %}<span class="error">{{ errors.travel_date }}</span>{% endif %}
+        </label>
+
+        <label><input type="checkbox" name="insurance" {% if values.get('insurance') %}checked{% endif %}> Нужна страховка</label>
+
+        <br><br>
+        <button type="submit">Сформировать билет</button>
+    </form>
+
+    <p><a href="/lab3/">Назад в лабораторную</a></p>
+{% endblock %}
+
