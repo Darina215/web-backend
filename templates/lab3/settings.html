@@ -6,7 +6,7 @@
 {# основной контент: #}
 {% block main %}
     <h1>Cookies</h1>
-    <form>
+    <form method="get">
         <div>
             <label for="color">Выберите цвет текста:</label>
             <input type="color" id="color" name="color" value="{{ color or '' }}">
