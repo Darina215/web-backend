@@ -207,12 +207,10 @@ PRODUCTS = [
 
 @lab3.route('/lab3/products', methods=['GET', 'POST'])
 def products():
-    # Получаем минимальную и максимальную цену среди всех товаров
     prices = [p['price'] for p in PRODUCTS]
     overall_min = min(prices)
     overall_max = max(prices)
 
-    # Читаем диапазон из cookies
     cookie_min = request.cookies.get('min_price')
     cookie_max = request.cookies.get('max_price')
 
@@ -225,7 +223,6 @@ def products():
     if request.method == 'POST':
         action = request.form.get('action')
 
-        # Кнопка "Сброс"
         if action == 'reset':
             resp = make_response(render_template('lab3/products.html',
                                                  products=PRODUCTS,
@@ -238,7 +235,6 @@ def products():
             resp.set_cookie('max_price', '', expires=0)
             return resp
 
-        # Кнопка "Искать"
         if action == 'search':
             try:
                 min_val = float(request.form.get('min_price')) if request.form.get('min_price') else None
@@ -253,7 +249,6 @@ def products():
             if min_val is not None and max_val is not None and min_val > max_val:
                 min_val, max_val = max_val, min_val
 
-            # Фильтруем
             def check_price(p):
                 if min_val is not None and p['price'] < min_val:
                     return False
@@ -288,7 +283,6 @@ def products():
         except ValueError:
             max_val = None
 
-        # Авто исправление min/max
         if min_val is not None and max_val is not None and min_val > max_val:
             min_val, max_val = max_val, min_val
 
