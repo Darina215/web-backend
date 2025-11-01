@@ -209,3 +209,62 @@ def fridge():
                          result=result, 
                          snowflakes=snowflakes)
 
+
+@lab4.route('/lab4/grain-form')
+def grain_form():
+    return render_template('lab4/grain-form.html')
+
+
+@lab4.route('/lab4/grain', methods=['POST'])
+def grain():
+    grain_type = request.form.get('grain_type')
+    weight = request.form.get('weight')
+    
+    error = None
+    result = None
+    discount_applied = False
+    discount_amount = 0
+    
+    prices = {
+        'barley': 12000,  
+        'oats': 8500,     
+        'wheat': 9000,    
+        'rye': 15000      
+    }
+    
+    grain_names = {
+        'barley': 'ячмень',
+        'oats': 'овёс', 
+        'wheat': 'пшеница',
+        'rye': 'рожь'
+    }
+    
+    if not weight:
+        error = 'Ошибка: не указан вес'
+    else:
+        weight = float(weight)
+        if weight <= 0:
+            error = 'Ошибка: вес должен быть больше 0'
+        elif weight > 100:
+            error = 'Извините, такого объёма сейчас нет в наличии'
+        else:
+            price_per_ton = prices.get(grain_type, 0)
+            total = weight * price_per_ton
+            
+            if weight > 10:
+                discount = total * 0.10
+                total -= discount
+                discount_applied = True
+                discount_amount = discount
+            
+            grain_name = grain_names.get(grain_type, '')
+            result = f'Заказ успешно сформирован. Вы заказали {grain_name}. Вес: {weight} т. Сумма к оплате: {total:.0f} руб.'
+    
+    return render_template('lab4/grain.html',
+                         grain_type=grain_type,
+                         weight=weight,
+                         error=error,
+                         result=result,
+                         discount_applied=discount_applied,
+                         discount_amount=discount_amount)
+
