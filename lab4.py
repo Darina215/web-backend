@@ -139,7 +139,6 @@ def login():
                     return render_template('lab4/login.html', 
                                          authorized=True, 
                                          name=user['name'])
-            # Если пользователь не найден, удаляем из сессии
             session.pop('login', None)
         
         return render_template('lab4/login.html', authorized=False, login='')
@@ -148,13 +147,11 @@ def login():
     password = request.form.get('password', '')
     error = None
     
-    # Проверка на пустые поля
     if login == '':
         error = 'Не введён логин'
     elif password == '':
         error = 'Не введён пароль'
     else:
-        # Проверка логина и пароля
         for user in users:
             if login == user['login'] and password == user['password']:
                 session['login'] = login
