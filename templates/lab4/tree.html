@@ -4,10 +4,15 @@
 
 {% block main %}
     <div>
-        Посажено деревьев: {{ tree_count }}
+        Посажено деревьев: <strong>{{ tree_count }}</strong>
     </div>
     <form method="POST">
-        <button name="operation" value="plant">Посадить дерево</button>
-        <button name="operation" value="cut">Срубить дерево</button>
+        <button name="operation" value="plant" {% if tree_count >= 6 %}disabled{% endif %}>
+            Посадить дерево
+        </button>
+        <button name="operation" value="cut" {% if tree_count <= 0 %}disabled{% endif %}>
+            Срубить дерево</button>
     </form>
+    <br>
+    <a href="/lab4/">В меню лабораторной</a>
 {% endblock %}
