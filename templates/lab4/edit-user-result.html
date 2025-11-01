@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block lab %}Редактирование данных{% endblock %}
+
+{% block main %}
+    <h1>Результат редактирования</h1>
+    
+    {% if error %}
+        <div style="color: red;">{{ error }}</div>
+        <div>
+            <a href="/lab4/edit-user-form">Назад к форме редактирования</a>
+        </div>
+    {% else %}
+        <div>Данные успешно обновлены!</div>
+        <div>
+            <a href="/lab4/users">К списку пользователей</a>
+        </div>
+    {% endif %}
+    <br>
+    <div>
+        <a href="/lab4/">В меню лабораторной</a>
+    </div>
+{% endblock %}
