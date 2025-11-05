@@ -133,7 +133,6 @@ users = [
 def login():
     if request.method == 'GET':
         if 'login' in session:
-            # Ищем пользователя в списке
             for user in users:
                 if user['login'] == session['login']:
                     return render_template('lab4/login.html', 
@@ -255,7 +254,7 @@ def grain():
                 discount_amount = discount
             
             grain_name = grain_names.get(grain_type, '')
-            result = f'Заказ успешно сформирован. Вы заказали {grain_name}. Вес: {weight} т. Сумма к оплате: {total:.0f} руб.'
+            result = f'Заказ успешно сформирован. Вы заказали {grain_name}. Вес: {weight} т. Сумма к оплате: {total} руб.'
     
     return render_template('lab4/grain.html',
                          grain_type=grain_type,
@@ -312,7 +311,6 @@ def register():
 
 @lab4.route('/lab4/users')
 def users_list():
-    # Проверка авторизации
     if 'login' not in session:
         return redirect('/lab4/login')
     
