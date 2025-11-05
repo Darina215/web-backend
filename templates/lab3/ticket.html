@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Билет</title>
+    <style>
+        .ticket { border: 1px solid #333; padding: 1em; max-width: 600px; }
+        .highlight { font-weight: bold; }
+    </style>
+{% endblock %}
+
+{% block lab %}Лабораторная работа 3, Железнодорожный билет{% endblock %}
+{# основной контент: #}
+{% block main %}
+    <h1>Ваш билет</h1>
+    <div class="ticket">
+        <p>ФИО: <span class="highlight">{{ ticket.full_name }}</span></p>
+        <p>Возраст: {{ ticket.age }} {% if ticket.is_child %}(<strong>Детский билет</strong>){% endif %}</p>
+        <p>Полка: {{ ticket.sheet }}</p>
+        <p>Бельё: {{ 'Да' if ticket.with_linens else 'Нет' }}</p>
+        <p>Багаж: {{ 'Да' if ticket.with_baggage else 'Нет' }}</p>
+        <p>Пункт выезда: {{ ticket.from_point }}</p>
+        <p>Пункт назначения: {{ ticket.to_point }}</p>
+        <p>Дата поездки: {{ ticket.travel_date }}</p>
+        <p>Страховка: {{ 'Да' if ticket.insurance else 'Нет' }}</p>
+        <hr>
+        <p>Итоговая стоимость: <span class="highlight">{{ ticket.price }} руб.</span></p>
+    </div>
+
+    <p><a href="/lab3/ticket">Вернуться к форме</a></p>
+{% endblock %}
+
+
+

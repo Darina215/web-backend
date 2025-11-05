@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Мемы</title>
+{% extends "base.html" %}
+
+{% block head %}
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,17 +27,20 @@
             text-align: center;
         }
     </style>
-</head>
-<body>
+{% endblock %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 2, Картинки{% endblock %}
+{# основной контент: #}
+{% block main %}
     <h1>Список мемов</h1>
     <div class="mem-container">
         {% for mem in memes %}
         <div class="mem-card">
-            <img src="{{ url_for('static', filename=mem.image) }}" alt="{{ mem.name }}">
+            <img src="{{ url_for('static', filename='lab1/' ~ mem.image) }}" alt="{{ mem.name }}">
             <h3>{{ mem.name }}</h3>
             <p>{{ mem.description }}</p>
         </div>
         {% endfor %}
     </div>
-</body>
-</html>
+{% endblock %}

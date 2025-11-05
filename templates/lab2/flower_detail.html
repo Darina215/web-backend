@@ -1,0 +1,20 @@
+{% extends "base.html" %} 
+
+{% block head %}
+  <title>Цветок {{ flower.name }}</title>
+{% endblock %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 2, Выбранный цветок{% endblock %}
+
+{# основной контент: #}
+{% block main %}
+  <h1>Выбранный цветок</h1>
+  <p>Название: <b>{{ flower.name }}</b></p>
+  <p>Цена: <b>{{ flower.price }}</b></p>
+
+  <p>
+    <a href="{{ url_for('lab2.delete_flower', flower_id=flower_id) }}">Удалить этот цветок</a> |
+    <a href="{{ url_for('lab2.all_flowers') }}">Назад к списку</a>
+  </p>
+{% endblock %}

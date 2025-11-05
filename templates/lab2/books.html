@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Редкачева. ЛР 2. Список книг</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+{% extends "base.html" %}
+
+{% block head %}
     <style>
         table {
             border-collapse: collapse;
@@ -19,7 +16,12 @@
             text-align: center;
         }
     </style>
-</head>
+{% endblock %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 2, Список книг{% endblock %}
+{# основной контент: #}
+{% block main %}
 <body>
     <h1>Список книг</h1>
     <table>
@@ -38,5 +40,4 @@
         </tr>
         {% endfor %}
     </table>
-</body>
-</html>
+{% endblock %}
