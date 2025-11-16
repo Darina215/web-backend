@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 5{% endblock %}
+
+{% block main %}
+    <h1>Успешная регистрация!</h1>
+    
+    <div style="text-align: center; padding: 20px;">
+        <p>Пользователь <strong>{{ login }}</strong> успешно зарегистрирован!</p>
+        <a href="/lab5" class="lab5-link">Перейти к базе знаний</a>
+    </div>
+{% endblock %}
