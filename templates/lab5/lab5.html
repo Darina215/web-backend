@@ -10,7 +10,7 @@
             <a href="/lab5/create" class="lab5-link">Создать статью</a>
             <a href="/lab5/login" class="lab5-link">Войти</a>
             <a href="/lab5/register" class="lab5-link">Регистрация</a>
-            <span class="lab5-username">{{ username }}</span>
+            <span class="lab5-username">{{ login if login else 'Anonymous' }}</span>
         </div>
     </div>
         <a href="/">На главную</a>
