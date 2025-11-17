@@ -8,8 +8,11 @@
         <div class="lab5-links">
             <a href="/lab5/list" class="lab5-link">Список статей</a>
             <a href="/lab5/create" class="lab5-link">Создать статью</a>
+            <a href="/lab5/public_articles" class="lab5-link">Публичные статьи</a>
+            <a href="/lab5/all_users" class="lab5-link">Все пользователи</a>
             
             {% if login %}
+                <a href="/lab5/profile" class="lab5-link">Профиль</a>
                 <a href="/lab5/logout" class="lab5-link">Выход</a>
             {% else %}
                 <a href="/lab5/login" class="lab5-link">Войти</a>

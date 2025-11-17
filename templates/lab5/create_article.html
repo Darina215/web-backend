@@ -23,6 +23,20 @@
         </div>
 
         <div>
+            <label>
+                <input type="checkbox" name="is_favorite">
+                Сделать избранной
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="is_public">
+                Сделать публичной
+            </label>
+        </div>
+        
+        <div>
             <button type="submit">Готово</button>
             <br>
             <a href="{{ url_for('lab5.list_articles') }}">Отмена</a>

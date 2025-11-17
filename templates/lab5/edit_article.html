@@ -25,6 +25,20 @@
         </div>
         
         <div>
+            <label>
+                <input type="checkbox" name="is_favorite" {% if article['is_favorite'] %}checked{% endif %}>
+                Избранная статья
+            </label>
+        </div>
+        
+        <div>
+            <label>
+                <input type="checkbox" name="is_public" {% if article['is_public'] %}checked{% endif %}>
+                Публичная статья
+            </label>
+        </div>
+        
+        <div>
             <button type="submit">Сохранить изменения</button>
             <br>
             <a href="{{ url_for('lab5.list_articles') }}">Отмена</a>
