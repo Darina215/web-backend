@@ -5,8 +5,21 @@
 {% block main %}
     <h1>Статьи</h1>
 
-    {% for article in articles %}
-        <h2>{{ article['title'] }}</h2>
-        <blockquote>{{ article['article_text'] }}</blockquote>
-    {% endfor %}
+    {% if no_articles %}
+        <p>У вас пока нет статей.</p>
+    {% else %}
+        {% for article in articles %}
+            <h2>{{ article['title'] }}</h2>
+            <blockquote>{{ article['article_text'] }}</blockquote>
+            <div>
+                <a href="{{ url_for('lab5.edit_article', article_id=article['id']) }}">Редактировать</a>
+                <a href="{{ url_for('lab5.delete_article', article_id=article['id']) }}" \
+                   onclick="return confirm('Вы уверены, что хотите удалить эту статью?')">Удалить</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <br>
+    <a href="{{ url_for('lab5.create') }}">Создать новую статью</a>
+    <br>
+    <a href="{{ url_for('lab5.lab') }}">На главную</a>
 {% endblock %}
