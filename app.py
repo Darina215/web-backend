@@ -90,6 +90,38 @@ def index():
 <html>
     <head>
         <title>НГТУ, ФБ, Лабораторные работы</title>
+        <style>
+            body {
+                background-color: #FFD1D5;;
+                margin: 0;
+            }
+            nav {
+                font-size: 15px;
+                font-family 'Times New Roman', Times, serif;
+                color: white;
+            }
+            header {
+                background-color: rgb(219, 112, 147);
+                color: white;
+                padding: 10px;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                text-align: center;
+                font-size: 10px;
+            }
+            footer {
+                background-color: rgb(219, 112, 147);
+                color: white;
+                padding: 10px;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-style: italic;
+                text-align: right;
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                z-index: 2;
+            }
+        </style>
     </head>
     <body>
         <header>
@@ -107,6 +139,9 @@ def index():
             </ul>
             <ul>
                 <li><a href="/lab4/">Четвертая лабораторная</a></li>
+            </ul>
+             <ul>
+                <li><a href="/lab5">Пятая лабораторная</a></li>
             </ul>
         </nav>
         <footer>
