@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block lab %}Редактирование данных{% endblock %}
+
+{% block main %}
+    <h1>Редактирование данных пользователя</h1>
+    <form method="post" action="/lab4/edit-user">
+        <div>
+            <label for="login">Логин:</label>
+            <input type="text" id="login" name="login" value="{{ user.login }}">
+        </div>
+        <div>
+            <label for="name">Имя:</label>
+            <input type="text" id="name" name="name" value="{{ user.name }}">
+        </div>
+        <div>
+            <label for="password">Новый пароль (оставьте пустым, если не хотите менять):</label>
+            <input type="password" id="password" name="password">
+        </div>
+        <div>
+            <label for="confirm_password">Подтверждение нового пароля:</label>
+            <input type="password" id="confirm_password" name="confirm_password">
+        </div>
+        <div>
+            <input type="submit" value="Сохранить изменения">
+        </div>
+    </form>
+    <br>
+    <div>
+        <a href="/lab4/users">Назад к списку пользователей</a> | 
+        <a href="/lab4/">В меню лабораторной</a>
+    </div>
+{% endblock %}

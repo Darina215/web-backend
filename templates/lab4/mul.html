@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block lab %}Умножение чисел{% endblock %}
+
+{% block main %}
+    <h1>Результат умножения</h1>
+    <div>{{ x1 }} × {{ x2 }} = {{ result }}</div>
+    <br>
+    <div>
+        <a href="/lab4/mul-form">Назад к форме</a> | 
+        <a href="/lab4/">В меню лабораторной</a>
+    </div>
+{% endblock %}

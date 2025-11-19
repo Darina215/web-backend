@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block lab %}Регистрация{% endblock %}
+
+{% block main %}
+    <h1>Результат регистрации</h1>
+    
+    {% if error %}
+        <div style="color: red;">{{ error }}</div>
+        <div>
+            <a href="/lab4/register-form">Назад к форме регистрации</a>
+        </div>
+    {% else %}
+        <div>Регистрация успешна!</div>
+        <div>
+            <a href="/lab4/login">Войти</a>
+        </div>
+    {% endif %}
+    <br>
+    <div>
+        <a href="/lab4/">В меню лабораторной</a>
+    </div>
+{% endblock %}
