@@ -4,6 +4,9 @@
 
 {% block script %}
 <script>
+const userLogin = {{ login|tojson|default('""') }};
+
+
 function getOfficeList() {
     const url = '/lab6/json-rpc-api/';
     const json = {
@@ -24,10 +27,17 @@ function getOfficeList() {
         const ul = document.getElementById('office-list');
         ul.innerHTML = '';
 
+        let totalCost = 0;
+        let userOffices = [];
+
         for(let i = 0; i < office_list.length; i++) {
             const office = office_list[i];
             const li = document.createElement('li');
-            li.innerText = `${office.number}: ${office.tenant || 'свободен'}`;
+            li.innerHTML = `
+                <strong>Кабинет ${office.number}</strong><br>
+                Статус: ${office.tenant ? 'занят (' + office.tenant + ')' : 'свободен'}<br>
+                Стоимость: ${office.price} руб./мес.
+            `;
 
             if (!office.tenant) {
                 const bookingButton = document.createElement('button');
@@ -36,16 +46,39 @@ function getOfficeList() {
                 li.appendChild(bookingButton);
             }
 
-             else {
+            else if (office.tenant === userLogin) {
                 const cancelButton = document.createElement('button');
                 cancelButton.innerText = 'Освободить';
                 cancelButton.onclick = function() { cancellation(office.number) };
                 li.appendChild(cancelButton);
+                
+                // Добавляем в список офисов пользователя для расчета общей стоимости
+                userOffices.push(office);
+                totalCost += office.price;
             }
 
             ul.appendChild(li);
         }
+
+        updateTotalCost(totalCost, userOffices);
     })
+}
+
+function updateTotalCost(totalCost, userOffices) {
+    const totalCostDiv = document.getElementById('total-cost');
+    
+    if (totalCost > 0) {
+        let html = '<h3>Ваша аренда:</h3>';
+        html += '<ul>';
+        userOffices.forEach(office => {
+            html += `<li>Кабинет ${office.number}: ${office.price} руб./мес.</li>`;
+        });
+        html += '</ul>';
+        html += `<h4>Общая стоимость: ${totalCost} руб./мес.</h4>`;
+        totalCostDiv.innerHTML = html;
+    } else {
+        totalCostDiv.innerHTML = '<p>У вас нет арендованных офисов</p>';
+    }
 }
 
 function booking(officeNumber) {
@@ -130,7 +163,13 @@ document.addEventListener('DOMContentLoaded', function(){
 {% endblock %}
 
 {% block main %}
-    <h1>Список кабинетов</h1>
-    <ul id="office-list"></ul>
+    <h1>Аренда офисов</h1>
+    
+    <div class="office-list-container">
+        <h2>Список кабинетов</h2>
+        <ul id="office-list" class="office-list"></ul>
+    </div>
+    
+    <div id="total-cost" class="total-cost"></div>
 {% endblock %}
 
