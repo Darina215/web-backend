@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 5{% endblock %}
+
+{% block main %}
+    <h1>Создание статьи</h1>
+    
+    {% if error %}
+        <div style="color: red; margin-bottom: 15px;">{{ error }}</div>
+    {% endif %}
+
+    <form method="post">
+        <div>
+            <label>
+                Название статьи:
+                <input type="text" maxlength="50" name="title">
+            </label>
+        </div>
+
+        <div>
+            Текст статьи:
+            <textarea name="article_text"></textarea>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="is_favorite">
+                Сделать избранной
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" name="is_public">
+                Сделать публичной
+            </label>
+        </div>
+        
+        <div>
+            <button type="submit">Готово</button>
+            <br>
+            <a href="{{ url_for('lab5.list_articles') }}">Отмена</a>
+        </div>
+    </form>
+{% endblock %}

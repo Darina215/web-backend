@@ -1,16 +1,21 @@
 from flask import Flask, url_for, request, redirect, make_response, abort, render_template
 import datetime
+import os
 from lab1 import lab1
 from lab2 import lab2
 from lab3 import lab3
 from lab4 import lab4
+from lab5 import lab5
 app = Flask(__name__)
-app.secret_key = 'секретик'
+
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'секретно-секретный секрет')
+app.config['DB_TYPE'] = os.getenv('DB_TYPE', 'postgres')
+
 app.register_blueprint(lab1)
 app.register_blueprint(lab2)
 app.register_blueprint(lab3)
 app.register_blueprint(lab4)
-
+app.register_blueprint(lab5)
 
 log404 = []
 @app.errorhandler(404)
@@ -85,6 +90,38 @@ def index():
 <html>
     <head>
         <title>НГТУ, ФБ, Лабораторные работы</title>
+        <style>
+            body {
+                background-color: #FFD1D5;;
+                margin: 0;
+            }
+            nav {
+                font-size: 15px;
+                font-family 'Times New Roman', Times, serif;
+                color: white;
+            }
+            header {
+                background-color: rgb(219, 112, 147);
+                color: white;
+                padding: 10px;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                text-align: center;
+                font-size: 10px;
+            }
+            footer {
+                background-color: rgb(219, 112, 147);
+                color: white;
+                padding: 10px;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-style: italic;
+                text-align: right;
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                z-index: 2;
+            }
+        </style>
     </head>
     <body>
         <header>
@@ -102,6 +139,9 @@ def index():
             </ul>
             <ul>
                 <li><a href="/lab4/">Четвертая лабораторная</a></li>
+            </ul>
+             <ul>
+                <li><a href="/lab5">Пятая лабораторная</a></li>
             </ul>
         </nav>
         <footer>
