@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session, current_app, jsonify
+from flask import Blueprint, render_template, request, session, abort, current_app, jsonify
 from os import path
 import sqlite3
 import psycopg2
@@ -76,16 +76,29 @@ def get_films():
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['GET'])
 def get_film(id):
     if id < 0 or id >= len(films):
-        return jsonify({"error": "Фильм не найден"}), 404
-    return jsonify(films[id])
+        abort(404)
+    return films[id]
 
 
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['DELETE'])
 def del_film(id):
     if id < 0 or id >= len(films):
-        return jsonify({"error": "Фильм не найден"}), 404
+        abort(404)
     
     del films[id]
     return '', 204
+
+
+@lab7.route('/lab7/rest-api/films/<int:id>', methods=['PUT'])
+def put_film(id):
+    if id < 0 or id >= len(films):
+        abort(404)
+    
+    film = request.get_json()
+    films[id] = film
+    return films[id]
+
+
+
 
 
