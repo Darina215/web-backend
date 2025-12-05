@@ -3,9 +3,6 @@
 {% block lab %}Лабораторная работа 7{% endblock %}
 
 {% block script %}
-<script>
-    const BASE_API_URL = "{{ url_for('lab7.main') }}".replace('/lab7/', '/lab7/rest-api/films/');
-</script>
 <script src="{{ url_for('static', filename='lab7/main.js') }}"></script>
 
 <style>
