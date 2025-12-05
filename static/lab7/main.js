@@ -66,6 +66,15 @@ function deleteFilm(id, title) {
 function showModal() {
     document.querySelector('div.modal').style.display = 'block';
     document.getElementById('description-error').innerText = '';
+    if (document.getElementById('title-error')) {
+        document.getElementById('title-error').innerText = '';
+    }
+    if (document.getElementById('title-ru-error')) {
+        document.getElementById('title-ru-error').innerText = '';
+    }
+    if (document.getElementById('year-error')) {
+        document.getElementById('year-error').innerText = '';
+    }
 }
 function hideModal() {
     document.querySelector('div.modal').style.display = 'none';
@@ -100,6 +109,11 @@ function sendFilm() {
     const url = `/lab7/rest-api/films/${id}`;
     const method = id === '' ? 'POST' : 'PUT';
 
+    document.getElementById('description-error').innerText = '';
+    document.getElementById('title-error').innerText = '';
+    document.getElementById('title-ru-error').innerText = '';
+    document.getElementById('year-error').innerText = '';
+
     fetch(url, {
         method: method,
         headers: {"Content-Type": "application/json"},
@@ -113,9 +127,42 @@ function sendFilm() {
         return resp.json();
     })
     .then(function(errors) {
-        if(errors.description)
+        if(errors.description) {
             document.getElementById('description-error').innerText = errors.description;
+        }    
+         if (errors.title) {
+            // Если ошибка в оригинальном названии, можно показать её
+            let titleError = document.getElementById('title-error') || 
+                document.getElementById('description-error');
+            titleError.innerText = errors.title;
+        }
+        if (errors.title_ru) {
+            // Создаем или находим элемент для ошибки русского названия
+            let titleRuError = document.getElementById('title-ru-error');
+            if (!titleRuError) {
+                // Если элемента нет, создаем его
+                titleRuError = document.createElement('div');
+                titleRuError.id = 'title-ru-error';
+                titleRuError.className = 'error-message';
+                document.querySelector('label:nth-child(1)').appendChild(titleRuError);
+            }
+            titleRuError.innerText = errors.title_ru;
+        }
+        if (errors.year) {
+            // Создаем или находим элемент для ошибки года
+            let yearError = document.getElementById('year-error');
+            if (!yearError) {
+                yearError = document.createElement('div');
+                yearError.id = 'year-error';
+                yearError.className = 'error-message';
+                document.querySelector('label:nth-child(3)').appendChild(yearError);
+            }
+            yearError.innerText = errors.year;
+        }
     })
+    .catch(function(error) {
+        console.error('Ошибка:', error);
+    });
 }
 
 function editFilm(id) {

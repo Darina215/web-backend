@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, session, abort, current_app, jsonify
 from os import path
+from datetime import datetime
 import sqlite3
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -96,12 +97,30 @@ def put_film(id):
     
     film = request.get_json()
 
-    if film['description'] == '':
+    current_year = datetime.now().year
+
+    if not film.get('title_ru', '').strip():
+        return {'title_ru': 'Русское название обязательно для заполнения'}, 400
+    
+    if not film.get('title_ru', '').strip() and not film.get('title', '').strip():
+        return {'title_ru': 'Заполните хотя бы одно название'}, 400
+    
+    try:
+        year = int(film.get('year', 0))
+        if year < 1895 or year > current_year:
+            return {'year': f'Год должен быть в диапазоне от 1895 до {current_year}'}, 400
+    except (ValueError, TypeError):
+        return {'year': 'Год должен быть числом'}, 400
+    
+    description = film.get('description', '').strip()
+    if not description:
         return {'description': 'Заполните описание'}, 400
+    if len(description) > 2000:
+        return {'description': 'Описание не должно превышать 2000 символов'}, 400
     
     if film.get('title', '') == '' and film.get('title_ru', '') != '':
         film['title'] = film['title_ru']
-        
+
     films[id] = film
     return films[id]
 
@@ -110,8 +129,29 @@ def put_film(id):
 def add_film():
     film = request.get_json()
 
+    current_year = datetime.now().year
+
+    if not film.get('title_ru', '').strip():
+        return {'title_ru': 'Русское название обязательно для заполнения'}, 400
+    
+    if not film.get('title_ru', '').strip() and not film.get('title', '').strip():
+        return {'title_ru': 'Заполните хотя бы одно название'}, 400
+    
     if film['description'] == "":
         return {'description': 'Заполните описание'}, 400
+    
+    try:
+        year = int(film.get('year', 0))
+        if year < 1895 or year > current_year:
+            return {'year': f'Год должен быть в диапазоне от 1895 до {current_year}'}, 400
+    except (ValueError, TypeError):
+        return {'year': 'Год должен быть числом'}, 400
+    
+    description = film.get('description', '').strip()
+    if not description:
+        return {'description': 'Заполните описание'}, 400
+    if len(description) > 2000:
+        return {'description': 'Описание не должно превышать 2000 символов'}, 400
     
     if film.get('title', '') == '' and film.get('title_ru', '') != '':
         film['title'] = film['title_ru']
