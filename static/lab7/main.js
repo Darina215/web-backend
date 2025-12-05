@@ -29,13 +29,13 @@ function fillFilmList() {
             let editButton = document.createElement('button');
             editButton.innerText = "редактировать";
             editButton.onclick = function() {
-                editFilm(i);
+                editFilm(films[i].id);
             };
 
             let delButton = document.createElement('button');
             delButton.innerText = "удалить";
             delButton.onclick = function() {
-                deleteFilm(i, films[i].title_ru);
+                deleteFilm(films[i].id, films[i].title_ru);
             };
 
             tdAction.append(editButton);
@@ -104,10 +104,12 @@ function sendFilm() {
         title_ru: document.getElementById('title-ru').value,
         year: document.getElementById('year').value,
         description: document.getElementById('description').value
-    }
+    };
 
-    const url = `/lab7/rest-api/films/${id}`;
     const method = id === '' ? 'POST' : 'PUT';
+    const url = id === '' 
+        ? '/lab7/rest-api/films/' 
+        : `/lab7/rest-api/films/${id}`;
 
     document.getElementById('description-error').innerText = '';
     document.getElementById('title-error').innerText = '';
