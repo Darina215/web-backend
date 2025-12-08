@@ -3,6 +3,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from db import db
 from db.models import users, articles
 from flask_login import login_user, login_required, current_user, logout_user
+from sqlalchemy import or_, func
 
 lab8 = Blueprint('lab8', __name__)
 
@@ -71,9 +72,12 @@ def login():
 
 
 @lab8.route('/lab8/articles/')
-@login_required
 def article_list():
-    user_articles = articles.query.filter_by(login_id=current_user.id).all()
+    if current_user.is_authenticated:
+        user_articles = articles.query.filter_by(login_id=current_user.id).all()
+    else:
+        user_articles = articles.query.filter_by(is_public=True).all()
+
     return render_template('lab8/articles.html', articles=user_articles)
 
 
@@ -157,3 +161,31 @@ def delete_article(article_id):
     db.session.commit()
 
     return redirect('/lab8/articles/')
+
+
+@lab8.route('/lab8/articles/search', methods=['GET', 'POST'])
+def search_articles():
+    query = request.form.get('query', '').strip()
+
+    if not query:
+        return redirect('/lab8/articles/')
+
+    # Если авторизован — свои + публичные чужие
+    if current_user.is_authenticated:
+        articles_list = articles.query.filter(
+            or_(
+                articles.login_id == current_user.id,
+                articles.is_public == True
+            ),
+            func.lower(articles.title).like(f"%{query.lower()}%") |
+            func.lower(articles.article_text).like(f"%{query.lower()}%")
+        ).all()
+    else:
+        # Неавторизованные — только публичные
+        articles_list = articles.query.filter(
+            articles.is_public == True,
+            func.lower(articles.title).like(f"%{query.lower()}%") |
+            func.lower(articles.article_text).like(f"%{query.lower()}%")
+        ).all()
+
+    return render_template('lab8/articles.html', articles=articles_list)
