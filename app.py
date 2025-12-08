@@ -1,5 +1,6 @@
 from flask import Flask, url_for, request, redirect, make_response, abort, render_template
 import datetime
+from datetime import timedelta
 import os
 from os import path
 from flask_sqlalchemy import SQLAlchemy
@@ -28,6 +29,8 @@ def load_users(login_id):
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'секретно-секретный секрет')
 app.config['DB_TYPE'] = os.getenv('DB_TYPE', 'postgres')
+app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=30)
+
 
 if app.config['DB_TYPE'] == 'postgres':
     db_name = 'dar_redkacheva_orm'

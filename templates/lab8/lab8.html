@@ -10,10 +10,14 @@
             <a href="/lab8/create" class="lab5-link">Создать статью</a>
             
 
-            <a href="/lab8/login" class="lab5-link">Войти</a>
-            <a href="/lab8/register" class="lab5-link">Регистрация</a>
-            
-            <span class="lab5-username">{{ login if login else 'Anonymous' }}</span>
+            {% if current_user.is_authenticated %}
+                <span class="lab5-username">{{ current_user.login }}</span>
+                <a href="/lab8/logout" class="lab5-link">Выйти</a>
+            {% else %}
+                <a href="/lab8/login" class="lab5-link">Войти</a>
+                <a href="/lab8/register" class="lab5-link">Регистрация</a>
+                <span class="lab5-username">Anonymous</span>
+            {% endif %}
         </div>
     </div>
     <a href="/">На главную</a>
