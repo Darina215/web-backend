@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block lab %}Статьи{% endblock %}
+
+{% block main %}
+    <h1>Список статей</h1>
+
+    <a href="/lab8/create">Создать новую статью</a>
+
+    <ul>
+        {% for article in articles %}
+        <li>
+            <strong>{{ article.title }}</strong>
+
+            <div>
+                {{ article.article_text }}
+            </div>
+
+            {% if article.is_public %}(публичная){% endif %}
+
+            — <a href="/lab8/articles/edit/{{ article.id }}">Редактировать</a>
+
+            <form method="post" action="/lab8/articles/delete/{{ article.id }}" style="display:inline;">
+                <button type="submit" onclick="return confirm('Удалить статью?');">Удалить</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    <br>
+
+    <form action="/lab8/articles/search" method="post" style="margin-bottom: 20px;">
+        <input type="text" name="query" placeholder="Поиск по статьям">
+        <button type="submit">Найти</button>
+    </form>
+
+    <br>
+    <a href="/lab8/">К базе знаний</a>
+{% endblock %}

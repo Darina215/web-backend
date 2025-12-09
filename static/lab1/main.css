@@ -83,10 +83,12 @@ button {
 
 .lab5-username {
     font-weight: bold;
-    color: #555;
+    color: rgb(219, 112, 147);
     padding: 5px 10px;
-    background-color: #e8e8e8;
-    border-radius: 3px;
+    background-color: #FFD1D5;
+    border-radius: 10px;
+    position: fixed;
+    right: 20px;
 }
 
 .office-list {
@@ -133,3 +135,45 @@ button {
     color: #155724;
     font-size: 1.2em;
 }
+
+/* Стили для таблицы */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Заголовки таблицы */
+thead {
+    background: linear-gradient(135deg, #ed97c4 0%, #db6c98 100%);
+    color: white;
+}
+
+th {
+    padding: 15px;
+    text-align: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 3px solid #ffffff;
+}
+
+/* Ячейки таблицы */
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    vertical-align: middle;
+    
+}
+
+/* Эффект при наведении */
+tbody tr:hover {
+    background-color: #db6c98;
+    transition: background-color 0.3s ease;
+    color: #e0e0e0;
+}
+
