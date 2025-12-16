@@ -3,3 +3,6 @@ __pycache__/
 .env
 database.db
 *.pyc
+films.db
+dar_redkacheva_orm
+dar_redkacheva_orm.db

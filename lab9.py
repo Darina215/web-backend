@@ -48,7 +48,7 @@ def init_gifts():
         })
 
 
-@lab9.route("/")
+@lab9.route("/lab9/")
 def index():
     init_gifts()
     return render_template(
