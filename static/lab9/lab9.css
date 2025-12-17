@@ -14,6 +14,81 @@ h1 {
     display: flex;
     justify-content: space-between;
     margin: 20px 40px;
+
+    padding: 15px 30px; 
+    background: linear-gradient(135deg, #1a472a 0%, #2d5a27 50%, #1a472a 100%); /* Зелёный градиент - цвет ёлки */
+    border: 3px solid #c0392b; 
+    border-radius: 15px; 
+    box-shadow: 0 0 20px rgba(192, 57, 43, 0.5), 
+                inset 0 0 15px rgba(255, 255, 255, 0.2); 
+}
+
+/* Стили для отдельных полей счётчиков */
+.info > div {
+    background: rgba(255, 255, 255, 0.9); 
+    padding: 10px 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border: 2px solid #f1c40f; 
+    
+    font-weight: bold;
+    font-size: 18px;
+    color: #c0392b;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    
+}
+
+/* Добавляем снежинки в блоки счётчиков */
+.info > div::after {
+    content: "❄";
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 16px;
+    opacity: 0.7;
+    animation: snowFloat 3s ease-in-out infinite;
+}
+
+@keyframes snowFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(5px) rotate(180deg); }
+}
+
+.info > div:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    background: rgba(255, 250, 240, 0.95); 
+    transition: all 0.3s ease;
+}
+
+/* Стили для текста внутри счётчиков */
+.info span {
+    color: #1a472a;
+    font-weight: normal;
+    margin-right: 5px;
+}
+
+/* Анимация мягкого свечения для всего блока */
+@keyframes holidayGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(192, 57, 43, 0.5), 
+                         inset 0 0 15px rgba(255, 255, 255, 0.2); }
+    50% { box-shadow: 0 0 30px rgba(192, 57, 43, 0.8), 
+                     inset 0 0 20px rgba(255, 255, 255, 0.3); }
+}
+
+.info {
+    animation: holidayGlow 4s ease-in-out infinite;
+}
+
+/* Добавляем новогодние иконки перед текстом */
+.info > div:nth-child(1)::before {
+    content: "🎁 ";
+    font-size: 20px;
+}
+
+.info > div:nth-child(2)::before {
+    content: "✨ ";
+    font-size: 20px;
 }
 
 .field {
@@ -48,14 +123,13 @@ h1 {
 }
 
 .gift:hover {
-    transform: scale(1.1) rotate(-5deg); 
+    transform: scale(1.3) rotate(3deg); 
 }
 
 .gift img {
     width: 150px;
-    border: 2px solid #e311b9; 
     border-radius: 10px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    box-shadow: 3px 3px 10px rgba(240, 144, 216, 0.76);
 }
 
 .gift.opened img {
@@ -69,7 +143,6 @@ h1 {
     top: 5px;
     right: 5px;
     font-size: 24px;
-    color: #c0392b;
 }
 
 .reset-btn {
@@ -86,7 +159,8 @@ h1 {
 }
 
 .reset-btn:hover {
-    background: #2e9acc;
+    background: #f4272b;
+    transform: scale(0.9);
 }
 
 .modal {
