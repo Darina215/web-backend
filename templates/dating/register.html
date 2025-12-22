@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block lab %}Регистрация{% endblock %}
+
+{% block main %}
+<h1>Регистрация</h1>
+<form method="post">
+    <input type="text" name="login" placeholder="Логин" required><br>
+    <input type="password" name="password" placeholder="Пароль" required><br>
+    <input type="text" name="full_name" placeholder="ФИО" required><br>
+    <input type="number" name="age" placeholder="Возраст" required><br>
+    <input type="text" name="gender" placeholder="Ваш пол" required><br>
+    <input type="text" name="search_gender" placeholder="Ищу пол" required><br>
+    <button type="submit">Зарегистрироваться</button>
+</form>
+{% endblock %}

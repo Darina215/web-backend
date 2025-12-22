@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block lab %}Моя анкета{% endblock %}
+
+{% block main %}
+<h1>Моя анкета</h1>
+<form method="post">
+    <input type="text" name="full_name" value="{{ user.full_name }}"><br>
+    <input type="text" name="group_name" value="{{ user.group_name }}"><br>
+    <input type="number" name="age" value="{{ user.age }}"><br>
+    <input type="text" name="gender" value="{{ user.gender }}"><br>
+    <input type="text" name="search_gender" value="{{ user.search_gender }}"><br>
+    <textarea name="about">{{ user.about }}</textarea><br>
+    <label>
+        <input type="checkbox" name="is_hidden" {% if user.is_hidden %}checked{% endif %}>
+        Скрыть анкету
+    </label><br>
+    <button type="submit">Сохранить</button>
+</form>
+{% endblock %}

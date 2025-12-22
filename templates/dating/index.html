@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block lab %}Сайт знакомств{% endblock %}
+
+{% block main %}
+<h1>Добро пожаловать на сайт знакомств!</h1>
+<div class="lab5-menu">
+    <div class="lab5-links">
+        {% if current_user.is_authenticated %}
+            <span class="lab5-username">{{ current_user.full_name }}</span>
+            <a href="/dating/me">Моя анкета</a>
+            <a href="/dating/search">Поиск анкет</a>
+            <a href="/dating/logout">Выйти</a>
+        {% else %}
+            <a href="/dating/register">Регистрация</a>
+            <a href="/dating/login">Вход</a>
+            <span class="lab5-username">Anonymous</span>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
