@@ -17,7 +17,6 @@ from lab6 import lab6
 from lab7 import lab7
 from lab8 import lab8
 from lab9 import lab9
-from dating.routes import dating
 
 app = Flask(__name__)
 
@@ -30,7 +29,7 @@ def load_users(login_id):
     return users.query.get(int(login_id))
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'секретно-секретный секрет')
-app.config['DB_TYPE'] = os.getenv('DB_TYPE', 'sqlite')
+app.config['DB_TYPE'] = os.getenv('DB_TYPE', 'postgres')
 app.config['REMEMBER_COOKIE_DURATION'] = timedelta(days=30)
 
 
@@ -59,8 +58,6 @@ app.register_blueprint(lab6)
 app.register_blueprint(lab7)
 app.register_blueprint(lab8)
 app.register_blueprint(lab9)
-app.register_blueprint(dating, url_prefix='/dating')
-
 
 
 log404 = []
@@ -201,9 +198,6 @@ def index():
             <ul>
                 <li><a href="/lab9/">Лабораторная работа 9</a></li>
             </ul>
-            <ul>
-                <li><a href="/dating/">Расчетно-графическое задание</a></li>
-            </ul>
         </nav>
         <footer>
             Редкачева Дарина Вадимовна, группа ФБИ-32, 3 курс, 2025 год
@@ -255,4 +249,4 @@ def internal_error(err):
         <a href="/">Главная</a>
     </body>
 </html>
-''', 500
+''', 500 
