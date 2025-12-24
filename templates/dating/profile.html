@@ -43,3 +43,7 @@
 <a href="{{ url_for('dating.delete_account') }}" style="color:red;">Удалить аккаунт</a>
 
 {% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='dating/dating.js') }}"></script>
+{% endblock %}
