@@ -4,6 +4,11 @@ import os
 # Путь к вашей базе данных SQLite
 db_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "database.db")
 
+conn = sqlite3.connect(db_path)
+cur = conn.cursor()
+
+cur.execute("DELETE FROM dating_profiles")
+conn.commit()
 
 users = [
     # user_id, full_name, age, gender, search_gender, about, photo, is_hidden
@@ -39,17 +44,16 @@ users = [
     (30, "Александра Петрова", 21, "Женский", "Мужской", "Музыка, спорт и кино — мои увлечения.", "user30.jpg", 0),
 ]
 
+
 conn = sqlite3.connect(db_path)
 cur = conn.cursor()
 
-try:
-    for u in users:
-        cur.execute("""
-            INSERT INTO dating_profiles
-            (user_id, full_name, age, gender, search_gender, about, photo, is_hidden)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, u)
-    conn.commit()
-    print("Пользователи успешно добавлены!")
-finally:
-    conn.close()
+for u in users:
+    cur.execute("""
+        INSERT INTO dating_profiles
+        (user_id, full_name, age, gender, search_gender, about, photo, is_hidden)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """, u)
+
+conn.commit()
+conn.close()
