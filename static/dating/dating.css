@@ -1,0 +1,164 @@
+/* --- Общие настройки --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: #007BFF;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+/* --- Хедер и навигация --- */
+header {
+    background: rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid #ddd;
+    padding: 15px 30px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header nav a {
+    margin-right: 20px;
+    font-weight: 600;
+}
+
+main {
+    padding: 100px 30px 70px 30px;
+}
+
+/* --- Формы --- */
+form {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin-bottom: 25px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="number"],
+form textarea,
+form select,
+form input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    transition: border 0.3s;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+form button {
+    background: linear-gradient(90deg, #007BFF, #00bfff);
+    color: #fff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s;
+}
+
+form button:hover {
+    background: linear-gradient(90deg, #0056b3, #0099cc);
+    transform: translateY(-2px);
+}
+
+/* --- Карточки пользователей --- */
+.user_card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.user_card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.user_card img {
+    display: block;
+    margin-top: 10px;
+    border-radius: 15px;
+    max-width: 150px;
+    height: auto;
+    object-fit: cover;
+}
+
+/* --- Кнопка «Следующие» --- */
+#next_button {
+    background: linear-gradient(90deg, #28a745, #00cc44);
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s;
+}
+
+#next_button:hover {
+    background: linear-gradient(90deg, #1e7e34, #009933);
+    transform: translateY(-2px);
+}
+
+/* --- Футер --- */
+footer {
+    text-align: center;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.95);
+    border-top: 1px solid #ddd;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    backdrop-filter: blur(5px);
+}
+
+/* --- Ошибки и уведомления --- */
+.error {
+    color: red;
+    margin-top: 10px;
+}
+
+

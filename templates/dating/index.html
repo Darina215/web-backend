@@ -1,0 +1,12 @@
+{% extends 'baze_dating.html' %}
+
+{% block title %}Главная - НеТиндер{% endblock %}
+
+{% block content %}
+<h1>Добро пожаловать на сайт знакомств!</h1>
+{% if authorized %}
+    <p>Вы вошли как {{ login }}</p>
+{% else %}
+    <p>Пожалуйста, войдите или зарегистрируйтесь.</p>
+{% endif %}
+{% endblock %}

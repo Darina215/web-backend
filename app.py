@@ -17,6 +17,7 @@ from lab6 import lab6
 from lab7 import lab7
 from lab8 import lab8
 from lab9 import lab9
+from dating import dating
 
 app = Flask(__name__)
 
@@ -58,6 +59,7 @@ app.register_blueprint(lab6)
 app.register_blueprint(lab7)
 app.register_blueprint(lab8)
 app.register_blueprint(lab9)
+app.register_blueprint(dating, url_prefix='/dating')
 
 
 log404 = []
@@ -197,6 +199,9 @@ def index():
             </ul>
             <ul>
                 <li><a href="/lab9/">Лабораторная работа 9</a></li>
+            </ul>
+            <ul>
+                <li><a href="/dating/">Расчетно-графическое задание</a></li>
             </ul>
         </nav>
         <footer>

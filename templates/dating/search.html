@@ -1,0 +1,24 @@
+{% extends 'baze_dating.html' %}
+
+{% block title %}Поиск{% endblock %}
+
+{% block content %}
+<h2>Поиск пользователей</h2>
+
+<div id="search_form">
+    <label>Имя: <input type="text" id="search_name"></label><br>
+    <label>Возраст от: <input type="number" id="search_age_min"></label><br>
+    <label>Возраст до: <input type="number" id="search_age_max"></label><br>
+    <button type="button" onclick="loadSearch()">Найти</button>
+</div>
+
+<hr>
+
+<div id="search_results"></div>
+<button type="button" id="next_button" onclick="loadNext()" style="display:none;">Следующие</button>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='dating/dating.js') }}"></script>
+{% endblock %}
