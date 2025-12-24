@@ -106,7 +106,6 @@ def profile():
     if 'user_id' not in session:
         return redirect(url_for('dating.login'))
 
-    user_id = session['user_id']
     db_type = current_app.config.get('DB_TYPE')
 
     try:
@@ -117,7 +116,8 @@ def profile():
 
     try:
         if request.method == 'GET':
-            # Получаем профиль
+            # Получаем профиль текущего пользователя
+            user_id = session['user_id']
             if db_type == 'postgres':
                 cur.execute("SELECT * FROM dating_profiles WHERE user_id=%s", (user_id,))
             else:
@@ -131,8 +131,6 @@ def profile():
         gender = (request.form.get('gender') or '').strip()
         search_gender = (request.form.get('search_gender') or '').strip()
         about = (request.form.get('about') or '').strip()
-
-        GENDERS = ('Мужской', 'Женский')
 
         # Валидация
         if not full_name or not age or gender not in GENDERS or search_gender not in GENDERS:
@@ -156,10 +154,10 @@ def profile():
                 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
                 photo.save(os.path.join(UPLOAD_FOLDER, photo_filename))
 
-        # is_hidden: bool для PostgreSQL, int для SQLite
         is_hidden_val = False if db_type == 'postgres' else 0
 
-        # Проверяем, есть ли профиль
+        # Проверяем, есть ли профиль текущего пользователя
+        user_id = session['user_id']
         if db_type == 'postgres':
             cur.execute("SELECT id FROM dating_profiles WHERE user_id=%s", (user_id,))
         else:
@@ -167,7 +165,7 @@ def profile():
         existing = cur.fetchone()
 
         if existing:
-            # UPDATE
+            # UPDATE существующего профиля
             if db_type == 'postgres':
                 cur.execute("""
                     UPDATE dating_profiles
@@ -182,25 +180,32 @@ def profile():
                     WHERE user_id=?
                 """, (full_name, age, gender, search_gender, about, photo_filename, is_hidden_val, user_id))
         else:
-            # INSERT
+            # INSERT нового профиля с уникальным user_id
             if db_type == 'postgres':
+                cur.execute("SELECT MAX(user_id) AS max_id FROM dating_profiles")
+                row = cur.fetchone()
+                max_id = row['max_id'] if row and row['max_id'] else 0
+                new_user_id = max_id + 1
                 cur.execute("""
                     INSERT INTO dating_profiles
                     (user_id, full_name, age, gender, search_gender, about, photo, is_hidden)
                     VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
-                """, (user_id, full_name, age, gender, search_gender, about, photo_filename, is_hidden_val))
+                """, (new_user_id, full_name, age, gender, search_gender, about, photo_filename, is_hidden_val))
             else:
+                cur.execute("SELECT MAX(user_id) AS max_id FROM dating_profiles")
+                row = cur.fetchone()
+                max_id = row['max_id'] if row and row['max_id'] else 0
+                new_user_id = max_id + 1
                 cur.execute("""
                     INSERT INTO dating_profiles
                     (user_id, full_name, age, gender, search_gender, about, photo, is_hidden)
                     VALUES (?,?,?,?,?,?,?,?)
-                """, (user_id, full_name, age, gender, search_gender, about, photo_filename, is_hidden_val))
+                """, (new_user_id, full_name, age, gender, search_gender, about, photo_filename, is_hidden_val))
 
         conn.commit()
         return redirect(url_for('dating.profile'))
 
     except Exception as e:
-        # Печать ошибки в консоль для отладки
         print("Profile error:", e)
         return render_template('dating/profile.html', profile=request.form, error="Произошла ошибка при сохранении профиля")
 
