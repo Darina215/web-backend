@@ -1,12 +1,78 @@
 {% extends 'baze_dating.html' %}
 
-{% block title %}Главная - НеТиндер{% endblock %}
+{% block title %}НеТиндер{% endblock %}
 
 {% block content %}
-<h1>Добро пожаловать на сайт знакомств!</h1>
-{% if authorized %}
-    <p>Вы вошли как {{ login }}</p>
-{% else %}
-    <p>Пожалуйста, войдите или зарегистрируйтесь.</p>
-{% endif %}
+<div class="home-container">
+    <h1>Добро пожаловать на сайт знакомств!</h1>
+
+    {% if authorized %}
+        <p class="welcome-text">Вы вошли как <strong>{{ login }}</strong></p>
+        <a href="{{ url_for('dating.search_page') }}" class="btn-primary">Перейти к поиску пользователей</a>
+        <a href="{{ url_for('dating.profile') }}" class="btn-secondary">Мой профиль</a>
+    {% else %}
+        <p class="welcome-text">Пожалуйста, войдите или зарегистрируйтесь.</p>
+        <a href="{{ url_for('dating.login') }}" class="btn-primary">Войти</a>
+        <a href="{{ url_for('dating.register') }}" class="btn-secondary">Регистрация</a>
+    {% endif %}
+</div>
 {% endblock %}
+
+{% block head %}
+<style>
+.home-container {
+    max-width: 600px;
+    margin: 120px auto 50px;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.home-container h1 {
+    font-size: 2.2em;
+    margin-bottom: 20px;
+    color: #007BFF;
+}
+
+.welcome-text {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.btn-primary, .btn-secondary {
+    display: inline-block;
+    padding: 12px 25px;
+    margin: 10px 5px;
+    border-radius: 10px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #007BFF, #00bfff);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(90deg, #0056b3, #0099cc);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: #f0f2f5;
+    color: #007BFF;
+    border: 2px solid #007BFF;
+}
+
+.btn-secondary:hover {
+    background: #007BFF;
+    color: #fff;
+    transform: translateY(-2px);
+}
+</style>
+{% endblock %}
+

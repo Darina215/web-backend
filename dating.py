@@ -204,7 +204,7 @@ def profile():
                 """, (user_id, full_name, age, gender, search_gender, about, photo_filename, is_hidden_val))
 
         conn.commit()
-        return redirect(url_for('dating.profile'))
+        return redirect(url_for('dating.search_page'))
 
     finally:
         conn.close()
@@ -249,46 +249,93 @@ def delete_account():
 @dating.route('/api/search')
 def search():
     if 'user_id' not in session:
-        return jsonify([])
+        return jsonify({'error': 'Вы не авторизованы', 'results': []})
 
-    offset = int(request.args.get('offset', 0))
+    def to_int(val):
+        try:
+            return int(val)
+        except (TypeError, ValueError):
+            return None
+
+    offset = to_int(request.args.get('offset')) or 0
     name_filter = (request.args.get('name') or '').strip()
-    age_min = request.args.get('age_min')
-    age_max = request.args.get('age_max')
+    age_min = to_int(request.args.get('age_min'))
+    age_max = to_int(request.args.get('age_max'))
 
     user_id = session['user_id']
     conn, cur = db_connect()
+
     try:
         # текущий пользователь
         if current_app.config.get('DB_TYPE') == 'postgres':
-            cur.execute("SELECT gender, search_gender FROM dating_profiles WHERE user_id=%s", (user_id,))
+            cur.execute(
+                "SELECT gender, search_gender FROM dating_profiles WHERE user_id=%s",
+                (user_id,)
+            )
         else:
-            cur.execute("SELECT gender, search_gender FROM dating_profiles WHERE user_id=?", (user_id,))
+            cur.execute(
+                "SELECT gender, search_gender FROM dating_profiles WHERE user_id=?",
+                (user_id,)
+            )
+
         me = cur.fetchone()
         if not me:
-            return jsonify([])
+            return jsonify({'error': 'Сначала заполните свой профиль', 'results': []})
 
-        # поиск
-        query = "SELECT full_name, age, gender, about, photo FROM dating_profiles WHERE is_hidden=0 AND gender=%s AND search_gender=%s" if current_app.config.get('DB_TYPE') == 'postgres' else \
-                "SELECT full_name, age, gender, about, photo FROM dating_profiles WHERE is_hidden=0 AND gender=? AND search_gender=?"
+        # базовый запрос
+        if current_app.config.get('DB_TYPE') == 'postgres':
+            query = """
+                SELECT full_name, age, gender, about, photo
+                FROM dating_profiles
+                WHERE is_hidden = FALSE
+                  AND gender = %s
+                  AND search_gender = %s
+            """
+        else:
+            query = """
+                SELECT full_name, age, gender, about, photo
+                FROM dating_profiles
+                WHERE is_hidden = 0
+                  AND gender = ?
+                  AND search_gender = ?
+            """
+
         params = [me['search_gender'], me['gender']]
 
         if name_filter:
-            query += " AND full_name LIKE %s" if current_app.config.get('DB_TYPE') == 'postgres' else " AND full_name LIKE ?"
+            query += " AND full_name ILIKE %s" if current_app.config.get('DB_TYPE') == 'postgres' else " AND full_name LIKE ?"
             params.append(f"%{name_filter}%")
-        if age_min:
+
+        if age_min is not None:
             query += " AND age >= %s" if current_app.config.get('DB_TYPE') == 'postgres' else " AND age >= ?"
             params.append(age_min)
-        if age_max:
+
+        if age_max is not None:
             query += " AND age <= %s" if current_app.config.get('DB_TYPE') == 'postgres' else " AND age <= ?"
             params.append(age_max)
 
         query += " LIMIT 3 OFFSET %s" if current_app.config.get('DB_TYPE') == 'postgres' else " LIMIT 3 OFFSET ?"
         params.append(offset)
 
-        cur.execute(query, tuple(params) if current_app.config.get('DB_TYPE') == 'postgres' else params)
+        cur.execute(
+            query,
+            tuple(params) if current_app.config.get('DB_TYPE') == 'postgres' else params
+        )
+
         results = [dict(r) for r in cur.fetchall()]
+
+        # Если нет подходящих пользователей
+        if not results:
+            return jsonify({'error': 'Пользователи, подходящие по вашим критериям, не найдены.', 'results': []})
+
+        return jsonify({'results': results, 'error': None})
+
     finally:
         conn.close()
 
-    return jsonify(results)
+
+@dating.route('/search')
+def search_page():
+    if 'user_id' not in session:
+        return redirect(url_for('dating.login'))
+    return render_template('dating/search.html')

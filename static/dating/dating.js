@@ -18,7 +18,7 @@ if (document.getElementById('search_results')) {
         const ageMin = document.getElementById('search_age_min').value;
         const ageMax = document.getElementById('search_age_max').value;
 
-        fetch(`/dating/api/search?offset=${offset}&name=${name}&age_min=${ageMin}&age_max=${ageMax}`)
+        fetch(`/dating/api/search?offset=${offset}&name=${encodeURIComponent(name)}&age_min=${ageMin}&age_max=${ageMax}`)
             .then(res => res.json())
             .then(data => {
                 const container = document.getElementById('search_results');
@@ -31,11 +31,24 @@ if (document.getElementById('search_results')) {
                     return;
                 }
 
-                data.forEach(user => {
+                if (data.error) {
+                    container.innerHTML = `<p class="error">${data.error}</p>`;
+                    nextButton.style.display = 'none';
+                    return;
+                }
+
+                if (!data.results || data.results.length === 0) {
+                    container.innerHTML = '<p>Пользователи не найдены.</p>';
+                    nextButton.style.display = 'none';
+                    return;
+                }
+
+                // Рендерим карточки
+                data.results.forEach(user => {
                     const card = document.createElement('div');
                     card.classList.add('user_card');
                     card.innerHTML = `
-                        ${user.photo ? `<img src="/static/uploads/${user.photo}" width="100">` : ''}
+                        ${user.photo ? `<img src="/static/uploads/${user.photo}" width="150">` : ''}
                         <div class="user_info">
                             <strong>${user.full_name}</strong>, ${user.age} лет<br>
                             ${user.about || ''}

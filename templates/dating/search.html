@@ -3,12 +3,12 @@
 {% block title %}Поиск{% endblock %}
 
 {% block content %}
-<h2>Поиск пользователей</h2>
 
-<div id="search_form">
-    <label>Имя: <input type="text" id="search_name"></label><br>
-    <label>Возраст от: <input type="number" id="search_age_min"></label><br>
-    <label>Возраст до: <input type="number" id="search_age_max"></label><br>
+<div id="search_form" class="search_block">
+    <h2>Поиск пользователей</h2>
+    <label>Имя: <input type="text" id="search_name" placeholder="Введите имя"></label>
+    <label>Возраст от: <input type="number" id="search_age_min" placeholder="от"></label>
+    <label>Возраст до: <input type="number" id="search_age_max" placeholder="до"></label>
     <button type="button" onclick="loadSearch()">Найти</button>
 </div>
 

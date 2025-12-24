@@ -14,13 +14,15 @@
 <body>
     <header>
         <nav>
-            <a href="{{ url_for('dating.index') }}">Главная</a>
+            <a href="{{ url_for('dating.index') }}" class="{% if request.endpoint == 'dating.index' %}active{% endif %}">Главная</a>
+            
             {% if session.get('user_id') %}
-                <a href="{{ url_for('dating.profile') }}">Профиль</a>
+                <a href="{{ url_for('dating.profile') }}" class="{% if request.endpoint == 'dating.profile' %}active{% endif %}">Профиль</a>
+                <a href="{{ url_for('dating.search_page') }}" class="{% if request.endpoint == 'dating.search_page' %}active{% endif %}">Найти пару</a>
                 <a href="{{ url_for('dating.logout') }}">Выйти</a>
             {% else %}
-                <a href="{{ url_for('dating.login') }}">Войти</a>
-                <a href="{{ url_for('dating.register') }}">Регистрация</a>
+                <a href="{{ url_for('dating.login') }}" class="{% if request.endpoint == 'dating.login' %}active{% endif %}">Войти</a>
+                <a href="{{ url_for('dating.register') }}" class="{% if request.endpoint == 'dating.register' %}active{% endif %}">Регистрация</a>
             {% endif %}
         </nav>
     </header>
