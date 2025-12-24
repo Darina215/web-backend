@@ -4,49 +4,42 @@
 
 {% block content %}
 <h2>Ваш профиль</h2>
+
 <form method="post" enctype="multipart/form-data">
     <label>ФИО: <input type="text" name="full_name" value="{{ profile.full_name if profile }}"></label><br>
     <label>Возраст: <input type="number" name="age" value="{{ profile.age if profile }}"></label><br>
+
     <label>Пол: 
     <select name="gender">
         {% set GENDERS = ['Мужской', 'Женский'] %}
         {% for g in GENDERS %}
-            {% if profile %}
-                <option value="{{ g }}" {% if profile['gender'] == g %}selected{% endif %}>{{ g }}</option>
-            {% else %}
-                <option value="{{ g }}">{{ g }}</option>
-            {% endif %}
+            <option value="{{ g }}" {% if profile and profile['gender'] == g %}selected{% endif %}>{{ g }}</option>
         {% endfor %}
     </select>
-</label><br>
+    </label><br>
 
-<label>Ищу: 
+    <label>Ищу: 
     <select name="search_gender">
         {% set GENDERS = ['Мужской', 'Женский'] %}
         {% for g in GENDERS %}
-            {% if profile %}
-                <option value="{{ g }}" {% if profile['search_gender'] == g %}selected{% endif %}>{{ g }}</option>
-            {% else %}
-                <option value="{{ g }}">{{ g }}</option>
-            {% endif %}
+            <option value="{{ g }}" {% if profile and profile['search_gender'] == g %}selected{% endif %}>{{ g }}</option>
         {% endfor %}
     </select>
-</label>
-<br>
+    </label><br>
+
     <label>О себе:<br>
         <textarea name="about">{{ profile.about if profile }}</textarea>
     </label><br>
+
     <label>Фото: <input type="file" name="photo"></label><br>
     {% if profile and profile.photo %}
         <img src="{{ url_for('static', filename='uploads/' ~ profile.photo) }}" alt="Фото профиля" width="150">
     {% endif %}
+
     <button type="submit">Сохранить</button>
 </form>
 
 <a href="{{ url_for('dating.hide_profile') }}">Скрыть профиль</a> | 
 <a href="{{ url_for('dating.delete_account') }}" style="color:red;">Удалить аккаунт</a>
-
-<script src="{{ url_for('static', filename='dating/dating.js') }}"></script>
-<button onclick="loadNext()">Следующие</button>
 
 {% endblock %}
