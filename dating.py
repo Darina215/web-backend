@@ -39,11 +39,12 @@ def allowed_file(filename):
 def index():
     return render_template('dating/index.html', authorized='user_id' in session, login=session.get('login'))
 
+
 @dating.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
         return render_template('dating/register.html')
-    
+
     login = (request.form.get('login') or '').strip()
     password = (request.form.get('password') or '').strip()
 
@@ -54,22 +55,37 @@ def register():
 
     conn, cur = db_connect()
     try:
+        # Проверяем, существует ли логин
         if current_app.config.get('DB_TYPE') == 'postgres':
             cur.execute("SELECT id FROM dating_users WHERE login=%s", (login,))
         else:
             cur.execute("SELECT id FROM dating_users WHERE login=?", (login,))
         if cur.fetchone():
             return render_template('dating/register.html', error='Логин уже существует')
-        
+
+        # Вставляем нового пользователя и получаем его ID
         if current_app.config.get('DB_TYPE') == 'postgres':
-            cur.execute("INSERT INTO dating_users (login, password_hash) VALUES (%s, %s)", (login, password_hash))
+            cur.execute(
+                "INSERT INTO dating_users (login, password_hash) VALUES (%s, %s) RETURNING id",
+                (login, password_hash)
+            )
+            new_id = cur.fetchone()['id']
         else:
-            cur.execute("INSERT INTO dating_users (login, password_hash) VALUES (?, ?)", (login, password_hash))
+            cur.execute(
+                "INSERT INTO dating_users (login, password_hash) VALUES (?, ?)",
+                (login, password_hash)
+            )
+            new_id = cur.lastrowid
+
         conn.commit()
+        session['user_id'] = new_id
+        session['login'] = login
+
     finally:
         conn.close()
 
-    return redirect(url_for('dating.login'))
+    return redirect(url_for('dating.profile'))
+
 
 @dating.route('/login', methods=['GET', 'POST'])
 def login():
@@ -106,18 +122,13 @@ def profile():
     if 'user_id' not in session:
         return redirect(url_for('dating.login'))
 
+    user_id = session['user_id']
     db_type = current_app.config.get('DB_TYPE')
-
-    try:
-        conn, cur = db_connect()
-    except Exception as e:
-        print("DB connection error:", e)
-        return render_template('dating/profile.html', profile=None, error="Ошибка подключения к базе")
+    conn, cur = db_connect()
 
     try:
         if request.method == 'GET':
             # Получаем профиль текущего пользователя
-            user_id = session['user_id']
             if db_type == 'postgres':
                 cur.execute("SELECT * FROM dating_profiles WHERE user_id=%s", (user_id,))
             else:
@@ -125,14 +136,13 @@ def profile():
             profile = cur.fetchone()
             return render_template('dating/profile.html', profile=profile)
 
-        # POST — создание или обновление профиля
+        # POST — создаём или обновляем профиль
         full_name = (request.form.get('full_name') or '').strip()
         age = request.form.get('age')
         gender = (request.form.get('gender') or '').strip()
         search_gender = (request.form.get('search_gender') or '').strip()
         about = (request.form.get('about') or '').strip()
 
-        # Валидация
         if not full_name or not age or gender not in GENDERS or search_gender not in GENDERS:
             return render_template('dating/profile.html', profile=request.form,
                                    error='Заполните все обязательные поля корректно')
@@ -141,7 +151,7 @@ def profile():
             age = int(age)
             if age <= 0:
                 raise ValueError
-        except (ValueError, TypeError):
+        except:
             return render_template('dating/profile.html', profile=request.form,
                                    error='Возраст должен быть положительным числом')
 
@@ -156,8 +166,7 @@ def profile():
 
         is_hidden_val = False if db_type == 'postgres' else 0
 
-        # Проверяем, есть ли профиль текущего пользователя
-        user_id = session['user_id']
+        # Проверяем, есть ли уже профиль
         if db_type == 'postgres':
             cur.execute("SELECT id FROM dating_profiles WHERE user_id=%s", (user_id,))
         else:
@@ -165,7 +174,7 @@ def profile():
         existing = cur.fetchone()
 
         if existing:
-            # UPDATE существующего профиля
+            # Обновляем профиль
             if db_type == 'postgres':
                 cur.execute("""
                     UPDATE dating_profiles
@@ -180,34 +189,22 @@ def profile():
                     WHERE user_id=?
                 """, (full_name, age, gender, search_gender, about, photo_filename, is_hidden_val, user_id))
         else:
-            # INSERT нового профиля с уникальным user_id
+            # Создаём новый профиль
             if db_type == 'postgres':
-                cur.execute("SELECT MAX(user_id) AS max_id FROM dating_profiles")
-                row = cur.fetchone()
-                max_id = row['max_id'] if row and row['max_id'] else 0
-                new_user_id = max_id + 100
                 cur.execute("""
                     INSERT INTO dating_profiles
                     (user_id, full_name, age, gender, search_gender, about, photo, is_hidden)
                     VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
-                """, (new_user_id, full_name, age, gender, search_gender, about, photo_filename, is_hidden_val))
+                """, (user_id, full_name, age, gender, search_gender, about, photo_filename, is_hidden_val))
             else:
-                cur.execute("SELECT MAX(user_id) AS max_id FROM dating_profiles")
-                row = cur.fetchone()
-                max_id = row['max_id'] if row and row['max_id'] else 0
-                new_user_id = max_id + 100
                 cur.execute("""
                     INSERT INTO dating_profiles
                     (user_id, full_name, age, gender, search_gender, about, photo, is_hidden)
                     VALUES (?,?,?,?,?,?,?,?)
-                """, (new_user_id, full_name, age, gender, search_gender, about, photo_filename, is_hidden_val))
+                """, (user_id, full_name, age, gender, search_gender, about, photo_filename, is_hidden_val))
 
         conn.commit()
         return redirect(url_for('dating.profile'))
-
-    except Exception as e:
-        print("Profile error:", e)
-        return render_template('dating/profile.html', profile=request.form, error="Произошла ошибка при сохранении профиля")
 
     finally:
         conn.close()
