@@ -185,7 +185,7 @@ def profile():
                 cur.execute("SELECT MAX(user_id) AS max_id FROM dating_profiles")
                 row = cur.fetchone()
                 max_id = row['max_id'] if row and row['max_id'] else 0
-                new_user_id = max_id + 1
+                new_user_id = max_id + 100
                 cur.execute("""
                     INSERT INTO dating_profiles
                     (user_id, full_name, age, gender, search_gender, about, photo, is_hidden)
