@@ -5,6 +5,7 @@ body {
     margin: 0;
     padding: 0;
     color: #333;
+    padding-bottom: 70px;
 }
 
 a {
@@ -153,6 +154,7 @@ footer {
     bottom: 0;
     width: 100%;
     backdrop-filter: blur(5px);
+    z-index: 7;
 }
 
 /* --- Ошибки и уведомления --- */
