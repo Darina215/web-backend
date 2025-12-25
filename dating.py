@@ -41,7 +41,7 @@ def index():
 
 @dating.route('/dev/fill_test_users')
 def fill_test_users():
-    if not current_app.debug:
+    if not current_app.debug or not current_app.config.get('ALLOW_FILL_USERS'):
         abort(404)
 
     test_users = [
@@ -115,7 +115,6 @@ def fill_test_users():
         conn.commit()
 
     finally:
-    
         conn.close()
 
     return "OK"
