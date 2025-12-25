@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block main %}
+
+{% block lab %}Лабораторная работа 9{% endblock %}
+<h1>🎄 Новогодние подарки</h1>
+
+{% block script %}{% endblock %}
+<div class="info">
+    <div>
+        Открыто: <b id="opened">{{ opened }}</b>/3<br>
+        Осталось подарков: <b id="remaining">{{ remaining }}</b>
+    </div>
+
+    <div>
+        {% if is_auth %}
+            Вы вошли как <b>{{ login }}</b>
+            <a href="{{ url_for('lab9.logout') }}">Выйти</a>
+        {% else %}
+            <a href="{{ url_for('lab9.login') }}">Войти</a> |
+            <a href="{{ url_for('lab9.register') }}">Регистрация</a>
+        {% endif %}
+    </div>
+</div>
+
+{% if is_auth %}
+<button class="reset-btn" onclick="resetGifts()">🎅 Дед Мороз</button>
+{% endif %}
+
+<div class="field">
+{% for g in gifts %}
+    <div class="gift {% if g.opened %}opened{% endif %}"
+         style="top:{{ g.top }}%; left:{{ g.left }}%;"
+         onclick="openGift({{ g.id }})">
+
+        <img src="{{ url_for('static', filename='lab9/' ~ g.box) }}">
+
+        {% if g.require_auth and not is_auth %}
+            <div class="lock">🔒</div>
+        {% endif %}
+    </div>
+{% endfor %}
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h2>🎁 Поздравляем!</h2>
+        <img id="modal-image">
+        <p id="modal-text"></p>
+        <button onclick="closeModal()">Закрыть</button>
+    </div>
+</div>
+
+<script>
+const OPEN_URL = "{{ url_for('lab9.open_gift') }}";
+const RESET_URL = "{{ url_for('lab9.reset') }}";
+</script>
+<script src="{{ url_for('static', filename='lab9/lab9.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='lab9/lab9.css') }}">
+
+{% endblock %}
+
+{% block main %}
+    <h1>Поздравления</h1>
+{% endblock %} 

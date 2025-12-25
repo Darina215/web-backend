@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block main %}
+    <div class="auth-container">
+        <div class="auth-block">
+            <h2>🎄 Вход</h2>
+            <form method="post" class="form">
+                <input name="login" placeholder="Логин" required>
+                <input type="password" name="password" placeholder="Пароль" required>
+                <button>Войти</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
