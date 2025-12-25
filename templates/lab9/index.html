@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block main %}
 
-{% block lab %}Лабораторная работа 9{% endblock %}
 <h1>🎄 Новогодние подарки</h1>
 
 {% block script %}{% endblock %}
@@ -59,7 +58,3 @@ const RESET_URL = "{{ url_for('lab9.reset') }}";
 <link rel="stylesheet" href="{{ url_for('static', filename='lab9/lab9.css') }}">
 
 {% endblock %}
-
-{% block main %}
-    <h1>Поздравления</h1>
-{% endblock %} 
