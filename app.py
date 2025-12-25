@@ -22,8 +22,8 @@ from dating import dating
 app = Flask(__name__)
 
 # временные настройки
-app.config['DEBUG'] = True
-app.config['ALLOW_FILL_USERS'] = True
+ALLOW_FILL_USERS = False
+DEBUG = False
 
 login_manager = LoginManager()
 login_manager.login_view = 'lab8.login'
