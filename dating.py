@@ -38,69 +38,87 @@ def allowed_file(filename):
 def index():
     return render_template('dating/index.html', authorized='user_id' in session, login=session.get('login'))
 
-@dating.route('/dev/fill_test_users')
-def fill_test_users():
-    if not current_app.debug:
-        abort(404)
 
-    test_users = [
-        ("user1", "123", "Андрей Косолапов", 23, "Мужской", "Женский", "Люблю спорт и реп.", "user1.jpg"),
-        ("user2", "123", "Настя Махмадбекова", 20, "Женский", "Мужской", "Люблю Imagine Dragons и Екатерину Шульман", "user2.jpg"),
-        ("user3", "123", "Виктор Белан", 43, "Мужской", "Женский", "Пою, снимаю тикток", "user3.jpg"),
-        ("user4", "123", "Анна Дзюба", 35, "Женский", "Мужской", "Царица", "user4.jpg"),
-        ("user5", "123", "Георгий Гергерт", 24, "Мужской", "Женский", "Бесы вышли, танцую джерси", "user5.jpg"),
-        ("user6", "123", "Ольга Бузова", 39, "Женский", "Мужской", "Кайфуйте! Жизнь одна!", "user6.jpg"),
-        ("user7", "123", "Игорь Харламов", 45, "Мужской", "Женский", "2 раза развелся", "user7.jpg"),
-        ("user8", "123", "Анна Новикова", 23, "Женский", "Мужской", "Ищу интересные знакомства.", "user8.jpg"),
-        ("user9", "123", "Никита Морозов", 22, "Мужской", "Женский", "Обожаю путешествовать и готовить.", "user9.jpg"),
-        ("user10", "123", "Елена Федорова", 21, "Женский", "Мужской", "Люблю животных и спорт.", "user10.jpg"),
-        ("user11", "123", "Владислав Васильев", 24, "Мужской", "Женский", "Путешествия и музыка — моя страсть.", "user11.jpg"),
-        ("user12", "123", "Ксения Михайлова", 22, "Женский", "Мужской", "Ищу друзей и новые впечатления.", "user12.jpg"),
-        ("user13", "123", "Максим Сидоров", 25, "Мужской", "Женский", "Люблю спорт и фильмы.", "user13.jpg"),
-        ("user14", "123", "Алина Егорова", 20, "Женский", "Мужской", "Обожаю книги и путешествия.", "user14.jpg"),
-        ("user15", "123", "Артур Николаев", 23, "Мужской", "Женский", "Ищу новые знакомства и друзей.", "user15.jpg"),
-        ("user16", "123", "София Орлова", 21, "Женский", "Мужской", "Музыка и спорт — моя жизнь.", "user16.jpg"),
-        ("user17", "123", "Константин Павлов", 26, "Мужской", "Женский", "Люблю готовить и путешествовать.", "user17.jpg"),
-        ("user18", "123", "Дарья Голубева", 22, "Женский", "Мужской", "Ищу интересных людей и друзей.", "user18.jpg"),
-        ("user19", "123", "Евгений Крылов", 24, "Мужской", "Женский", "Спорт, музыка и книги — мое хобби.", "user19.jpg"),
-        ("user20", "123", "Вероника Данилова", 23, "Женский", "Мужской", "Обожаю путешествия и животных.", "user20.jpg"),
-        ("user21", "123", "Андрей Тихонов", 25, "Мужской", "Женский", "Ищу новые впечатления и знакомства.", "user21.jpg"),
-        ("user22", "123", "Наталья Васильева", 20, "Женский", "Мужской", "Люблю спорт и книги.", "user22.jpg"),
-        ("user23", "123", "Роман Козлов", 22, "Мужской", "Женский", "Музыка, путешествия и друзья.", "user23.jpg"),
-        ("user24", "123", "Ирина Мартынова", 21, "Женский", "Мужской", "Обожаю кино и спорт.", "user24.jpg"),
-        ("user25", "123", "Денис Семёнов", 24, "Мужской", "Женский", "Люблю готовить и читать.", "user25.jpg"),
-        ("user26", "123", "Людмила Белова", 22, "Женский", "Мужской", "Путешествия и новые знакомства.", "user26.jpg"),
-        ("user27", "123", "Виктор Никитин", 23, "Мужской", "Женский", "Музыка, спорт и книги — моя жизнь.", "user27.jpg"),
-        ("user28", "123", "Татьяна Романова", 20, "Женский", "Мужской", "Люблю животных и путешествия.", "user28.jpg"),
-        ("user29", "123", "Игорь Морозов", 26, "Мужской", "Женский", "Ищу друзей и новые впечатления.", "user29.jpg"),
-        ("user30", "123", "Александра Петрова", 21, "Женский", "Мужской", "Музыка, спорт и кино — мои увлечения.", "user30.jpg"),
-    ]                                                           
+# @dating.route('/dev/fill_test_users')
+# def fill_test_users():
+#     if not current_app.debug:
+#         abort(404)
 
-    conn, cur = db_connect()
+#     test_users = [
+#         ("user1", "123", "Андрей Косолапов", 23, "Мужской", "Женский", "Люблю спорт и реп.", "user1.jpg"),
+#         ("user2", "123", "Настя Махмадбекова", 20, "Женский", "Мужской", "Люблю Imagine Dragons и Екатерину Шульман", "user2.jpg"),
+#         ("user3", "123", "Виктор Белан", 43, "Мужской", "Женский", "Пою, снимаю тикток", "user3.jpg"),
+#         ("user4", "123", "Анна Дзюба", 35, "Женский", "Мужской", "Царица", "user4.jpg"),
+#         ("user5", "123", "Георгий Гергерт", 24, "Мужской", "Женский", "Бесы вышли, танцую джерси", "user5.jpg"),
+#         ("user6", "123", "Ольга Бузова", 39, "Женский", "Мужской", "Кайфуйте! Жизнь одна!", "user6.jpg"),
+#         ("user7", "123", "Игорь Харламов", 45, "Мужской", "Женский", "2 раза развелся", "user7.jpg"),
+#         ("user8", "123", "Анна Новикова", 23, "Женский", "Мужской", "Ищу интересные знакомства.", "user8.jpg"),
+#         ("user9", "123", "Никита Морозов", 22, "Мужской", "Женский", "Обожаю путешествовать и готовить.", "user9.jpg"),
+#         ("user10", "123", "Елена Федорова", 21, "Женский", "Мужской", "Люблю животных и спорт.", "user10.jpg"),
+#         ("user11", "123", "Владислав Васильев", 24, "Мужской", "Женский", "Путешествия и музыка — моя страсть.", "user11.jpg"),
+#         ("user12", "123", "Ксения Михайлова", 22, "Женский", "Мужской", "Ищу друзей и новые впечатления.", "user12.jpg"),
+#         ("user13", "123", "Максим Сидоров", 25, "Мужской", "Женский", "Люблю спорт и фильмы.", "user13.jpg"),
+#         ("user14", "123", "Алина Егорова", 20, "Женский", "Мужской", "Обожаю книги и путешествия.", "user14.jpg"),
+#         ("user15", "123", "Артур Николаев", 23, "Мужской", "Женский", "Ищу новые знакомства и друзей.", "user15.jpg"),
+#         ("user16", "123", "София Орлова", 21, "Женский", "Мужской", "Музыка и спорт — моя жизнь.", "user16.jpg"),
+#         ("user17", "123", "Константин Павлов", 26, "Мужской", "Женский", "Люблю готовить и путешествовать.", "user17.jpg"),
+#         ("user18", "123", "Дарья Голубева", 22, "Женский", "Мужской", "Ищу интересных людей и друзей.", "user18.jpg"),
+#         ("user19", "123", "Евгений Крылов", 24, "Мужской", "Женский", "Спорт, музыка и книги — мое хобби.", "user19.jpg"),
+#         ("user20", "123", "Вероника Данилова", 23, "Женский", "Мужской", "Обожаю путешествия и животных.", "user20.jpg"),
+#         ("user21", "123", "Андрей Тихонов", 25, "Мужской", "Женский", "Ищу новые впечатления и знакомства.", "user21.jpg"),
+#         ("user22", "123", "Наталья Васильева", 20, "Женский", "Мужской", "Люблю спорт и книги.", "user22.jpg"),
+#         ("user23", "123", "Роман Козлов", 22, "Мужской", "Женский", "Музыка, путешествия и друзья.", "user23.jpg"),
+#         ("user24", "123", "Ирина Мартынова", 21, "Женский", "Мужской", "Обожаю кино и спорт.", "user24.jpg"),
+#         ("user25", "123", "Денис Семёнов", 24, "Мужской", "Женский", "Люблю готовить и читать.", "user25.jpg"),
+#         ("user26", "123", "Людмила Белова", 22, "Женский", "Мужской", "Путешествия и новые знакомства.", "user26.jpg"),
+#         ("user27", "123", "Виктор Никитин", 23, "Мужской", "Женский", "Музыка, спорт и книги — моя жизнь.", "user27.jpg"),
+#         ("user28", "123", "Татьяна Романова", 20, "Женский", "Мужской", "Люблю животных и путешествия.", "user28.jpg"),
+#         ("user29", "123", "Игорь Морозов", 26, "Мужской", "Женский", "Ищу друзей и новые впечатления.", "user29.jpg"),
+#         ("user30", "123", "Александра Петрова", 21, "Женский", "Мужской", "Музыка, спорт и кино — мои увлечения.", "user30.jpg"),
+#     ]                                                           
 
-    try:
-        for login, password, name, age, gender, search_gender in test_users:
-            pwd = generate_password_hash(password)
+#     conn, cur = db_connect()
+#     db_type = current_app.config.get('DB_TYPE')
 
-            # создаём пользователя
-            cur.execute(
-                "INSERT INTO dating_users (login, password_hash) VALUES (?, ?)",
-                (login, pwd)
-            )
-            user_id = cur.lastrowid
+#     try:
+#         for login, password, full_name, age, gender, search_gender, about, photo in test_users:
+#             password_hash = generate_password_hash(password)
 
-            # создаём профиль
-            cur.execute("""
-                INSERT INTO dating_profiles
-                (user_id, full_name, age, gender, search_gender, is_hidden)
-                VALUES (?, ?, ?, ?, ?, 0)
-            """, (user_id, name, age, gender, search_gender))
+#             # ---------- USERS ----------
+#             if db_type == 'postgres':
+#                 cur.execute(
+#                     "INSERT INTO dating_users (login, password_hash) VALUES (%s, %s) RETURNING id",
+#                     (login, password_hash)
+#                 )
+#                 user_id = cur.fetchone()['id']
+#             else:
+#                 cur.execute(
+#                     "INSERT INTO dating_users (login, password_hash) VALUES (?, ?)",
+#                     (login, password_hash)
+#                 )
+#                 user_id = cur.lastrowid
 
-        conn.commit()
-    finally:
-        conn.close()
+#             # ---------- PROFILES ----------
+#             if db_type == 'postgres':
+#                 cur.execute("""
+#                     INSERT INTO dating_profiles
+#                     (user_id, full_name, age, gender, search_gender, about, photo, is_hidden)
+#                     VALUES (%s,%s,%s,%s,%s,%s,%s,FALSE)
+#                 """, (user_id, full_name, age, gender, search_gender, about, photo))
+#             else:
+#                 cur.execute("""
+#                     INSERT INTO dating_profiles
+#                     (user_id, full_name, age, gender, search_gender, about, photo, is_hidden)
+#                     VALUES (?,?,?,?,?,?,?,0)
+#                 """, (user_id, full_name, age, gender, search_gender, about, photo))
 
-    return "OK"
+#         conn.commit()
+
+#     finally:
+    
+#         conn.close()
+
+#     return "OK"
 
 
 @dating.route('/register', methods=['GET', 'POST'])
@@ -308,7 +326,6 @@ def delete_account():
 
     session.clear()
     return redirect(url_for('dating.register'))
-
 @dating.route('/api/search')
 def search():
     if 'user_id' not in session:
@@ -329,7 +346,7 @@ def search():
     conn, cur = db_connect()
 
     try:
-        # текущий пользователь
+        # Получаем профиль текущего пользователя
         if current_app.config.get('DB_TYPE') == 'postgres':
             cur.execute(
                 "SELECT gender, search_gender FROM dating_profiles WHERE user_id=%s",
@@ -345,7 +362,7 @@ def search():
         if not me:
             return jsonify({'error': 'Сначала заполните свой профиль', 'results': []})
 
-        # базовый запрос
+        # Базовый запрос: ищем подходящих пользователей, исключая текущего
         if current_app.config.get('DB_TYPE') == 'postgres':
             query = """
                 SELECT full_name, age, gender, about, photo
@@ -353,6 +370,7 @@ def search():
                 WHERE is_hidden = FALSE
                   AND gender = %s
                   AND search_gender = %s
+                  AND user_id != %s
             """
         else:
             query = """
@@ -361,14 +379,20 @@ def search():
                 WHERE is_hidden = 0
                   AND gender = ?
                   AND search_gender = ?
+                  AND user_id != ?
             """
 
-        params = [me['search_gender'], me['gender']]
+        params = [me['search_gender'], me['gender'], user_id]
 
+        # Фильтр по имени
         if name_filter:
-            query += " AND full_name ILIKE %s" if current_app.config.get('DB_TYPE') == 'postgres' else " AND full_name LIKE ?"
+            if current_app.config.get('DB_TYPE') == 'postgres':
+                query += " AND full_name ILIKE %s"
+            else:
+                query += " AND full_name LIKE ?"
             params.append(f"%{name_filter}%")
 
+        # Фильтр по возрасту
         if age_min is not None:
             query += " AND age >= %s" if current_app.config.get('DB_TYPE') == 'postgres' else " AND age >= ?"
             params.append(age_min)
@@ -377,17 +401,18 @@ def search():
             query += " AND age <= %s" if current_app.config.get('DB_TYPE') == 'postgres' else " AND age <= ?"
             params.append(age_max)
 
-        query += " LIMIT 3 OFFSET %s" if current_app.config.get('DB_TYPE') == 'postgres' else " LIMIT 3 OFFSET ?"
+        # LIMIT/OFFSET
+        if current_app.config.get('DB_TYPE') == 'postgres':
+            query += " ORDER BY id LIMIT %s OFFSET %s"
+        else:
+            query += " ORDER BY user_id LIMIT ? OFFSET ?"
+
+        params.append(3)  # limit
         params.append(offset)
 
-        cur.execute(
-            query,
-            tuple(params) if current_app.config.get('DB_TYPE') == 'postgres' else params
-        )
-
+        cur.execute(query, tuple(params) if current_app.config.get('DB_TYPE') == 'postgres' else params)
         results = [dict(r) for r in cur.fetchall()]
-        
-        # Если нет подходящих пользователей
+
         if not results:
             return jsonify({'error': 'Пользователи, подходящие по вашим критериям, не найдены.', 'results': []})
 

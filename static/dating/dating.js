@@ -18,19 +18,16 @@ if (document.getElementById('search_results')) {
         const ageMin = document.getElementById('search_age_min').value;
         const ageMax = document.getElementById('search_age_max').value;
 
+        // Запрос к API с текущим offset
         fetch(`/dating/api/search?offset=${offset}&name=${encodeURIComponent(name)}&age_min=${ageMin}&age_max=${ageMax}`)
             .then(res => res.json())
             .then(data => {
                 const container = document.getElementById('search_results');
 
-                if (offset === 0) container.innerHTML = ''; // очистка при новом поиске
+                // Очистка при новом поиске
+                if (offset === 0) container.innerHTML = '';
 
-                if (data.length === 0 && offset === 0) {
-                    container.innerHTML = '<p>Пользователи не найдены.</p>';
-                    nextButton.style.display = 'none';
-                    return;
-                }
-
+                // Ошибки и пустые результаты
                 if (data.error) {
                     container.innerHTML = `<p class="error">${data.error}</p>`;
                     nextButton.style.display = 'none';
@@ -43,14 +40,14 @@ if (document.getElementById('search_results')) {
                     return;
                 }
 
-                // Рендерим карточки
+                // Рендер карточек пользователей
                 data.results.forEach(user => {
                     const card = document.createElement('div');
                     card.classList.add('user_card');
                     card.innerHTML = `
                         ${user.photo ? `<img src="/static/uploads/${user.photo}" width="150">` : ''}
                         <div class="user_info">
-                            <strong>${user.full_name}</strong>, ${user.age} лет<br>
+                            <strong>${user.full_name}</strong> ${user.age} лет<br>
                             ${user.about || ''}
                         </div>
                     `;
@@ -58,12 +55,19 @@ if (document.getElementById('search_results')) {
                 });
 
                 // Показываем кнопку "Следующие" только если вернулось limit результатов
-                nextButton.style.display = data.length === limit ? 'inline-block' : 'none';
+                nextButton.style.display = data.results.length === limit ? 'inline-block' : 'none';
 
-                offset += data.length;
+                // Увеличиваем смещение на количество загруженных пользователей
+                offset += data.results.length;
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                console.error(err);
+                const container = document.getElementById('search_results');
+                container.innerHTML = '<p class="error">Ошибка загрузки пользователей.</p>';
+                nextButton.style.display = 'none';
+            });
     }
 }
+
 
 
